@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" width="900" height="900">
+<rect width="900" height="900" fill="#183D35"/>
+<rect x="200" y="150" width="500" height="560" rx="250" ry="120" fill="#FFCF7A"/>
+<rect x="200" y="150" width="500" height="560" rx="250" ry="120" fill="none" stroke="#5A2830" stroke-width="28"/>
+<path d="M450 160 V700 M210 430 H690" stroke="#5A2830" stroke-width="20"/>
+<rect x="420" y="560" width="60" height="110" rx="8" fill="#FFF5E6"/><path d="M450 520 q-18 24 0 40 q18 -16 0 -40z" fill="#FF9F43"/>
+<rect x="160" y="700" width="580" height="60" rx="20" fill="#F4F7FA"/>
+<text x="50%" y="93%" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#FFF5E6" opacity="0.75">Beispielbild – durch eigenes Foto ersetzen</text>
+</svg>

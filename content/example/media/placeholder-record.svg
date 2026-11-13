@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+<rect width="800" height="800" fill="#183D35"/>
+<circle cx="400" cy="380" r="280" fill="#101F25"/>
+<g fill="none" stroke="#2A3A40" stroke-width="3"><circle cx="400" cy="380" r="120"/>
+<circle cx="400" cy="380" r="150"/>
+<circle cx="400" cy="380" r="180"/>
+<circle cx="400" cy="380" r="210"/>
+<circle cx="400" cy="380" r="240"/>
+<circle cx="400" cy="380" r="265"/></g>
+<circle cx="400" cy="380" r="90" fill="#8F3442"/><circle cx="400" cy="380" r="12" fill="#F4F7FA"/>
+<text x="50%" y="92%" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#FFF5E6" opacity="0.75">Beispielbild – durch eigenes Cover ersetzen</text>
+</svg>

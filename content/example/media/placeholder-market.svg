@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+<rect width="1200" height="800" fill="#101F25"/>
+<g stroke="#D5B477" stroke-width="2" opacity="0.6"><path d="M0 120 Q300 220 600 120 T1200 120" fill="none"/></g>
+<g fill="#FFD98A"><circle cx="50" cy="150" r="10"/>
+<circle cx="150" cy="180" r="10"/>
+<circle cx="250" cy="150" r="10"/>
+<circle cx="350" cy="180" r="10"/>
+<circle cx="450" cy="150" r="10"/>
+<circle cx="550" cy="180" r="10"/>
+<circle cx="650" cy="150" r="10"/>
+<circle cx="750" cy="180" r="10"/>
+<circle cx="850" cy="150" r="10"/>
+<circle cx="950" cy="180" r="10"/>
+<circle cx="1050" cy="150" r="10"/>
+<circle cx="1150" cy="180" r="10"/></g>
+<g><path d="M120 420 l140 -90 l140 90z" fill="#8F3442"/><rect x="140" y="420" width="240" height="200" fill="#5A2830"/><rect x="170" y="450" width="180" height="90" fill="#FFCF7A" opacity="0.85"/>
+<path d="M500 400 l140 -100 l140 100z" fill="#183D35"/><rect x="520" y="400" width="240" height="220" fill="#22463D"/><rect x="550" y="430" width="180" height="100" fill="#FFCF7A" opacity="0.85"/>
+<path d="M860 420 l140 -90 l140 90z" fill="#8F3442"/><rect x="880" y="420" width="240" height="200" fill="#5A2830"/><rect x="910" y="450" width="180" height="90" fill="#FFCF7A" opacity="0.85"/></g>
+<rect y="620" width="1200" height="180" fill="#F4F7FA"/>
+<text x="50%" y="94%" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#FFF5E6" opacity="0.75">Beispielbild – durch eigenes Foto ersetzen</text>
+</svg>

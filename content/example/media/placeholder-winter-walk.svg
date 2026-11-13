@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+<defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B3A44"/><stop offset="1" stop-color="#5F7F86"/></linearGradient></defs>
+<rect width="1200" height="800" fill="url(#s)"/>
+<circle cx="930" cy="170" r="60" fill="#F4EBD8" opacity="0.9"/>
+<path d="M0 470 Q300 380 600 450 T1200 420 V800 H0Z" fill="#DCE6EC"/>
+<path d="M0 560 Q400 480 700 560 T1200 540 V800 H0Z" fill="#F4F7FA"/>
+<g fill="#183D35"><path d="M160 470 l60 -150 l60 150z"/><path d="M240 480 l45 -110 l45 110z"/><path d="M980 440 l55 -140 l55 140z"/></g>
+<path d="M560 800 C590 700 640 640 700 560" stroke="#B9C6CE" stroke-width="10" fill="none" stroke-dasharray="4 26" stroke-linecap="round"/>
+<path d="M620 800 C650 700 690 640 740 560" stroke="#B9C6CE" stroke-width="10" fill="none" stroke-dasharray="4 26" stroke-linecap="round"/>
+<text x="50%" y="94%" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#FFF5E6" opacity="0.75">Beispielbild – durch eigenes Foto ersetzen</text>
+</svg>

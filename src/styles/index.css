@@ -1,0 +1,508 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. Change colours here to re-theme the whole calendar.
+ * Contrast of text pairs is checked in tests/unit/contrast.test.ts.
+ */
+@theme {
+  --color-midnight: #101f25;
+  --color-midnight-deep: #0a1519;
+  --color-evergreen: #183d35;
+  --color-evergreen-light: #24564a;
+  --color-burgundy: #8f3442;
+  --color-burgundy-dark: #6e2632;
+  --color-ivory: #fff5e6;
+  --color-ivory-dim: #e6d9c3;
+  --color-gold: #d5b477;
+  --color-gold-bright: #ebd29f;
+  --color-snow: #f4f7fa;
+  --color-ink: #2a2320;
+  --color-ink-soft: #5b4f48;
+  --color-window: #ffcf7a;
+  --color-stone: #8b9a9a;
+
+  --font-serif: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Source Sans 3 Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 18px 40px -18px rgb(5 12 14 / 0.55);
+  --shadow-glow: 0 0 0 2px rgb(213 180 119 / 0.55), 0 0 26px 6px rgb(255 207 122 / 0.35);
+
+  --ease-door: cubic-bezier(0.22, 0.75, 0.2, 1);
+  --duration-door: 720ms;
+  --duration-quick: 160ms;
+}
+
+:root {
+  color-scheme: dark;
+  --paper-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.27 0 0 0 0 0.18 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@layer base {
+html {
+  background: var(--color-midnight-deep);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(120% 60% at 50% 0%, #1b3a44 0%, transparent 60%),
+    linear-gradient(180deg, var(--color-midnight) 0%, #12282a 55%, var(--color-evergreen) 100%);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-gold-bright);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.sr-only-focusable:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.font-serif-display {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
+}
+
+}
+
+@layer components {
+/* -------------------------------------------------------------------------
+ * Sky and snow (decorative; never intercept input)
+ * ---------------------------------------------------------------------- */
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 720px;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.2px 1.2px at 12% 18%, rgb(255 245 230 / 0.8), transparent),
+    radial-gradient(1px 1px at 28% 8%, rgb(255 245 230 / 0.6), transparent),
+    radial-gradient(1.4px 1.4px at 47% 22%, rgb(255 245 230 / 0.7), transparent),
+    radial-gradient(1px 1px at 63% 12%, rgb(255 245 230 / 0.55), transparent),
+    radial-gradient(1.3px 1.3px at 78% 26%, rgb(255 245 230 / 0.75), transparent),
+    radial-gradient(1px 1px at 90% 9%, rgb(255 245 230 / 0.6), transparent),
+    radial-gradient(1px 1px at 6% 34%, rgb(255 245 230 / 0.5), transparent),
+    radial-gradient(1.2px 1.2px at 38% 36%, rgb(255 245 230 / 0.45), transparent);
+}
+
+.moon {
+  position: absolute;
+  top: 54px;
+  right: max(18px, calc(50% - 560px));
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff8ea, #efdcb8 70%);
+  box-shadow: 0 0 40px 10px rgb(255 240 210 / 0.12);
+}
+
+.snowfall {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.snowflake {
+  position: absolute;
+  top: -12px;
+  border-radius: 50%;
+  background: var(--color-snow);
+  opacity: 0.75;
+  will-change: transform;
+  animation: snow-fall linear infinite;
+}
+
+@keyframes snow-fall {
+  from { transform: translate3d(0, -20px, 0); }
+  50% { transform: translate3d(var(--sway, 18px), 50vh, 0); }
+  to { transform: translate3d(0, 105vh, 0); }
+}
+
+.page-hidden .snowflake,
+.page-hidden .door-glow-pulse {
+  animation-play-state: paused;
+}
+
+/* -------------------------------------------------------------------------
+ * Village
+ * ---------------------------------------------------------------------- */
+.village {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 0;
+  row-gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .village { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .village { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+.village > li { position: relative; min-width: 0; }
+.village > li.village-grand { grid-column: 1 / -1; }
+
+.house {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  border-radius: 14px;
+  scroll-margin-block: 7rem;
+}
+
+.house:focus-visible { outline-offset: 2px; }
+
+.house-art {
+  position: relative;
+  transition: transform var(--duration-quick) ease-out;
+}
+
+.house:active .house-art { transform: scale(0.965); }
+.house[aria-busy='true'] { cursor: progress; }
+
+.house svg.house-svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* Door: an HTML layer positioned over the SVG so it can swing in 3D. */
+.door-frame {
+  position: absolute;
+  perspective: 420px;
+  transform-style: preserve-3d;
+}
+
+.door-light {
+  position: absolute;
+  inset: 0;
+  border-radius: 46% 46% 3px 3px / 30% 30% 3px 3px;
+  background: radial-gradient(120% 90% at 50% 70%, #fff1c9 0%, #ffcf7a 45%, #e59a3c 100%);
+  box-shadow: inset 0 -6px 12px rgb(143 52 66 / 0.25);
+  display: grid;
+  place-items: center;
+  opacity: 0.18;
+  transition: opacity var(--duration-door) ease-out;
+}
+
+.door-light-number {
+  font-family: var(--font-serif);
+  font-weight: 650;
+  color: var(--color-burgundy-dark);
+  font-size: clamp(0.95rem, 4.6vw, 1.35rem);
+  opacity: 0;
+  transition: opacity var(--duration-door) ease-out;
+}
+
+.door-leaf {
+  position: absolute;
+  inset: 0;
+  border-radius: 46% 46% 3px 3px / 30% 30% 3px 3px;
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 0.12) 0 6%, transparent 6% 94%, rgb(0 0 0 / 0.12) 94%),
+    linear-gradient(180deg, #a03d4c 0%, var(--color-burgundy) 55%, var(--color-burgundy-dark) 100%);
+  box-shadow: inset 0 0 0 1.5px rgb(213 180 119 / 0.55), 0 2px 4px rgb(0 0 0 / 0.35);
+  transform-origin: 0% 50%;
+  transform: rotateY(0deg);
+  transition: transform var(--duration-door) var(--ease-door), filter var(--duration-door) ease-out;
+  backface-visibility: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.door-number {
+  font-family: var(--font-serif);
+  font-weight: 650;
+  font-variant-numeric: lining-nums;
+  color: var(--color-gold-bright);
+  font-size: clamp(1rem, 5vw, 1.45rem);
+  line-height: 1;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.45);
+  margin-top: 4%;
+}
+
+.door-knob {
+  position: absolute;
+  right: 10%;
+  top: 84%;
+  width: 7%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-gold);
+}
+
+.door-badge {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-midnight);
+  color: var(--color-gold-bright);
+  box-shadow: 0 0 0 1.5px rgb(213 180 119 / 0.7);
+  right: -13px;
+  top: -16px;
+  width: 20px;
+  height: 20px;
+}
+
+.door-badge svg { width: 11px; height: 11px; }
+
+.today-tag {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 30%;
+  transform: translateX(-50%);
+  padding: 0.05rem 0.55rem 0.1rem;
+  border-radius: 999px;
+  background: var(--color-gold-bright);
+  color: var(--color-midnight);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
+}
+
+/* Windows glow */
+.house .win { fill: var(--color-window); opacity: 0.55; transition: opacity 600ms ease-out; }
+.house[data-state='opened'] .win,
+.house[data-state='available'] .win,
+.house[data-state='not_ready'] .win { opacity: 0.95; }
+.house[data-state='missed'] .win { opacity: 0.32; }
+
+/* --- states --- */
+.house[data-state='available'] .door-frame,
+.house[data-state='not_ready'] .door-frame {
+  border-radius: 46% 46% 3px 3px / 30% 30% 3px 3px;
+  box-shadow: var(--shadow-glow);
+}
+
+.door-glow-pulse {
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 207 122 / 0.45), transparent);
+  animation: glow-pulse 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+.house[data-state='opened'] .door-leaf { transform: rotateY(-112deg); filter: brightness(0.75); }
+.house[data-state='opened'] .door-light { opacity: 1; }
+.house[data-state='opened'] .door-light-number { opacity: 1; }
+.house[data-state='opened'] .door-number,
+.house[data-state='opened'] .door-knob { opacity: 0; transition: opacity 200ms ease-out; }
+
+.house[data-state='missed'] .door-leaf {
+  background:
+    linear-gradient(180deg, transparent 0 78%, var(--color-snow) 78%),
+    linear-gradient(180deg, #8e9b9a 0%, #6f7d7d 100%);
+  box-shadow: inset 0 0 0 1.5px rgb(244 247 250 / 0.5);
+}
+.house[data-state='missed'] .door-number { color: var(--color-snow); text-shadow: none; }
+.house[data-state='missed'] .door-knob { background: #c9d2d2; }
+
+.house[data-pending='true'] .door-leaf { filter: brightness(1.12); }
+
+.pending-dots {
+  position: absolute;
+  bottom: 14%;
+  left: 50%;
+  display: flex;
+  gap: 3px;
+  transform: translateX(-50%);
+}
+.pending-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-gold-bright);
+  animation: dot 900ms ease-in-out infinite;
+}
+.pending-dots span:nth-child(2) { animation-delay: 150ms; }
+.pending-dots span:nth-child(3) { animation-delay: 300ms; }
+@keyframes dot { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+
+.village[data-offline='true'] .house:not([data-state='opened']) { opacity: 0.72; }
+
+/* Celebration sparkles for the final door */
+.sparkles { position: absolute; inset: -40%; pointer-events: none; z-index: 5; }
+.sparkles i {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: 6px;
+  height: 6px;
+  background: var(--color-gold-bright);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity: 0;
+  animation: sparkle 1100ms ease-out forwards;
+}
+@keyframes sparkle {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.3) rotate(90deg); }
+}
+
+/* -------------------------------------------------------------------------
+ * Paper surfaces (cards, dialog)
+ * ---------------------------------------------------------------------- */
+.paper {
+  background-color: var(--color-ivory);
+  background-image: var(--paper-texture);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-card);
+}
+
+.deckle { border-radius: 4px 6px 5px 7px / 7px 4px 6px 5px; }
+
+/* -------------------------------------------------------------------------
+ * Surprise dialog
+ * ---------------------------------------------------------------------- */
+.surprise-dialog {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  background: transparent;
+  color: var(--color-ink);
+  overflow: hidden;
+}
+
+.surprise-dialog::backdrop {
+  background: rgb(6 14 17 / 0.78);
+}
+
+.surprise-dialog[open] { animation: dialog-in 280ms ease-out; }
+.surprise-dialog[open]::backdrop { animation: backdrop-in 280ms ease-out; }
+
+@keyframes dialog-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+
+.surprise-scroll {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding:
+    max(0.75rem, env(safe-area-inset-top))
+    max(0.75rem, env(safe-area-inset-right))
+    max(1rem, env(safe-area-inset-bottom))
+    max(0.75rem, env(safe-area-inset-left));
+}
+
+@media (min-width: 640px) {
+  .surprise-dialog {
+    width: min(42rem, calc(100% - 3rem));
+    height: auto;
+    max-height: calc(100dvh - 3rem);
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .surprise-scroll { height: auto; max-height: calc(100dvh - 3rem); padding: 0; }
+}
+
+.final-card {
+  background-image:
+    radial-gradient(120% 60% at 50% 0%, rgb(213 180 119 / 0.22), transparent 60%),
+    var(--paper-texture);
+  box-shadow: inset 0 0 0 1px rgb(143 52 66 / 0.25), inset 0 0 0 6px var(--color-ivory), inset 0 0 0 7px rgb(213 180 119 / 0.8), var(--shadow-card);
+}
+
+.voucher {
+  position: relative;
+  border: 2px dashed rgb(143 52 66 / 0.55);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 0 50%, var(--color-ivory) 0 13px, transparent 14px),
+    radial-gradient(circle at 100% 50%, var(--color-ivory) 0 13px, transparent 14px),
+    linear-gradient(135deg, #fbe9d0, #f6dfc0);
+}
+
+.polaroid {
+  background: #fffdf8;
+  padding: 0.6rem 0.6rem 0.9rem;
+  box-shadow: 0 10px 24px -12px rgb(42 35 32 / 0.55), 0 1px 2px rgb(42 35 32 / 0.2);
+}
+
+.notice-enter { animation: notice-in 220ms ease-out; }
+@keyframes notice-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+}
+
+/* -------------------------------------------------------------------------
+ * Reduced motion: system preference or the demo toggle.
+ * ---------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) {
+    --duration-door: 1ms;
+    scroll-behavior: auto;
+  }
+  :root:not([data-motion='full']) .snowfall,
+  :root:not([data-motion='full']) .door-glow-pulse,
+  :root:not([data-motion='full']) .sparkles { display: none; }
+  :root:not([data-motion='full']) .surprise-dialog[open],
+  :root:not([data-motion='full']) .surprise-dialog[open]::backdrop { animation: fade-in 120ms ease-out; }
+  :root:not([data-motion='full']) .house-art { transition: none; }
+  :root:not([data-motion='full']) .notice-enter { animation: none; }
+}
+
+:root[data-motion='reduce'] { --duration-door: 1ms; }
+:root[data-motion='reduce'] .snowfall,
+:root[data-motion='reduce'] .door-glow-pulse,
+:root[data-motion='reduce'] .sparkles { display: none; }
+:root[data-motion='reduce'] .surprise-dialog[open],
+:root[data-motion='reduce'] .surprise-dialog[open]::backdrop { animation: fade-in 120ms ease-out; }
+:root[data-motion='reduce'] .house-art { transition: none; }
+:root[data-motion='reduce'] .notice-enter { animation: none; }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+@media (hover: hover) {
+  .house:hover .house-art { transform: translateY(-2px); }
+  .house:active .house-art { transform: scale(0.965); }
+}

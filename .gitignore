@@ -1,0 +1,24 @@
+# Dependencies and build output
+node_modules/
+dist/
+.netlify/
+*.tsbuildinfo
+
+# Secrets — never commit credentials
+.env
+.env.*
+!.env.example
+
+# PRIVATE CONTENT — real messages, photos and voice messages
+content/private/
+backups/
+
+# Local demo / test data
+.demo-data/
+test-results/
+playwright-report/
+screenshots/
+
+# OS / editor
+.DS_Store
+*.log
