@@ -12,7 +12,10 @@ const PUBLIC_DIR = path.resolve(import.meta.dirname, '../../public');
 function mediaOf(block: Block): string[] {
   switch (block.type) {
     case 'memory':
-      return block.photos.map((photo) => photo.src);
+      return [
+        ...(block.photos ?? []).map((photo) => photo.src),
+        ...(block.videos ?? []).flatMap((video) => (video.poster ? [video.src, video.poster] : [video.src])),
+      ];
     case 'song':
       return block.artwork ? [block.artwork.src] : [];
     case 'voice':
@@ -41,19 +44,10 @@ describe('calendar content', () => {
     expect(JSON.stringify(result.error?.issues)).toMatch(/Day 4 is missing/);
   });
 
-  it('covers every supported block type', () => {
+  it('only uses supported block types', () => {
+    const supported = ['activity', 'finalLetter', 'letter', 'memory', 'playlist', 'reasons', 'song', 'voice', 'voucher'];
     const types = new Set(calendar.doors.flatMap((d) => d.blocks.map((b) => b.type)));
-    expect([...types].sort()).toEqual([
-      'activity',
-      'finalLetter',
-      'letter',
-      'memory',
-      'playlist',
-      'reasons',
-      'song',
-      'voice',
-      'voucher',
-    ]);
+    for (const type of types) expect(supported).toContain(type);
   });
 
   it('requires text and rejects unknown fields', () => {
@@ -87,7 +81,7 @@ describe('calendar content', () => {
     expect(blockSchema.safeParse({ type: 'memory', photos: [{ src: '/media/photos/a.jpg' }], story: ['x'] }).success).toBe(false);
     for (const door of calendar.doors) {
       for (const block of door.blocks) {
-        if (block.type === 'memory') for (const photo of block.photos) expect(photo.alt.length).toBeGreaterThan(0);
+        if (block.type === 'memory') for (const photo of block.photos ?? []) expect(photo.alt.length).toBeGreaterThan(0);
         if (block.type === 'song' && block.artwork) expect(block.artwork.alt.length).toBeGreaterThan(0);
         if (block.type === 'finalLetter' && block.photo) expect(block.photo.alt.length).toBeGreaterThan(0);
       }

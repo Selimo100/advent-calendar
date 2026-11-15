@@ -1,7 +1,7 @@
 /**
  * YOUR CALENDAR. This file is the single source of truth for all content.
  *
- * Every personal detail is currently a visible placeholder such as [NAME] or
+ * Every personal detail is currently a visible placeholder such as Joya or
  * [YOUR MEMORY]. Replace the placeholders with your real texts, put photos in
  * public/media/photos/ and voice recordings in public/media/audio/, and run
  * `npm run content:validate` to check everything.
@@ -14,97 +14,110 @@
  * optional **bold** and *italic*. Dates in `date` fields use YYYY-MM-DD and
  * are shown as DD.MM.YYYY.
  */
-import { defineCalendar } from './schema.ts';
+import { defineCalendar } from "./schema.ts";
 
 export default defineCalendar({
-  calendarId: 'advent-2026',
+  calendarId: "advent-2026",
   year: 2026,
   settings: {
-    recipientName: '[NAME]',
-    senderName: '[YOUR NAME]',
-    title: '24 kleine Gründe, warum du mir wichtig bist',
-    greeting: 'Hallo [NAME]',
+    recipientName: "Joya",
+    senderName: "Selina <3",
+    title: "24 chlini Gründ, wieso du mir wichtig bisch",
+    greeting: "Hey Joya",
     intro:
-      'In diesem kleinen Dorf wartet jeden Tag im Dezember ein neues Türchen auf dich. Jedes erzählt ein bisschen davon, warum du mir so wichtig bist.',
-    signature: 'Von Herzen, [YOUR NAME]',
+      "I dem chline Dorf warted jede Tag im Dezember es neus Tüürli uf dich. Jedes verzählt es bizzli meh, warum du mir so unglaublich wichtig bisch.",
+    signature: "Vo Herze, Selina <3",
     closingMessage:
-      'Die Adventszeit ist vorbei, aber die Türchen, die du geöffnet hast, bleiben hier für dich. Danke, dass du dir jeden Tag einen Moment dafür genommen hast. [YOUR CLOSING NOTE]',
-    footerNote: 'Gemacht mit viel Liebe und etwas zu viel Zimt.',
+      "D Adventsziit isch verbi, aber d’Tüürli, wo du ufgmacht hesch, die bliibet für immer und es sind no so viel meh als nur die 24, glaub mir. Danke, dass du dir jede einzelni Tag en Moment gnoh hesch.",
+    footerNote: "Gmacht mit viel Liebi.",
   },
   doors: [
     {
       day: 1,
-      title: 'Willkommen im Dorf',
+      title: "Willkomme im Dorf",
       blocks: [
         {
-          type: 'letter',
-          title: 'Liebe [NAME]',
+          type: "letter",
+          title: "Liebi Joya",
           paragraphs: [
-            'heute öffnet sich das erste Türchen. Ich habe mir überlegt, wie ich dir in diesem Dezember jeden Tag eine kleine Freude machen kann, und daraus ist dieses Dorf entstanden.',
-            'Hinter jedem Türchen steckt etwas, das ich dir schon lange sagen wollte, eine Erinnerung oder eine kleine Einladung. [YOUR WELCOME MESSAGE]',
-            'Jeden Tag kommt genau ein neues Türchen dazu. Die geöffneten bleiben hier, so oft du sie wieder lesen möchtest.',
+            "hüt machsch du s erste Tüürli uf. Ich han mir überleit, wie ich dir im Dezember jede Tag e chlii Freud chönnti bereite und genau det drus isch das chline Dörfli entstande. (Es isch sogar no chliner als Breiti ;)",
+            "Hinter jedem Tüürli steckt öppis, was ich dir scho lang han wele säge oder nie z Viel säge chan: e Errinerig e chlini Ihladig und no viel meh wo du im Dezember gseh wirsch. Han mich für ein chline digitale Adventskalender entschiede, will ich d Begeisterig vo dir gseh han, wo ich dir mini Websiite zeigt han, was mich so erfüllt het, dass ich denkt han das wär doch grad mal e gueti Möglichkeit.",
+            "Jede Tag chunnt es neus Tüürli dezue. Die wo scho offe sind, bliibet da und du chasch sie so oft du willsch wieder ufmache und lese.",
           ],
-          signature: '[YOUR NAME]',
+          signature: "Selina <3",
         },
       ],
     },
     {
       day: 2,
-      title: 'Etwas, das ich an dir schätze',
+      title: "Öppis wo ich a dir schetze",
       blocks: [
         {
-          type: 'letter',
+          type: "letter",
           paragraphs: [
-            'Mir ist neulich wieder aufgefallen, wie du [YOUR OBSERVATION].',
-            'Das ist so eine Kleinigkeit, die vielleicht niemand sonst bemerkt. Ich schon. Und ich mag sie *sehr*.',
+            "Mir isch letzti ufgfalle, wie gnau du mir zuelosisch, egal was ich säge. Du merksch dir jedi Chlinigkeit au wenn du mir mal gseit hesch, dass es dir nöd so eifach fallt. Es isch so es schöns Gfühl z merke, dass dir öppert zuelosst und sich defür interessiersch was du wie seisch. Das min Hals mini Schwachstell isch hesch durch das au scho sehr usgnutzt hihihi",
           ],
+          signature: "Selina <3",
         },
       ],
-    },
-    {
+      },
+      {
       day: 3,
-      title: 'Ein Lied für uns',
+      title: "Es Lied vo eus",
       blocks: [
         {
-          type: 'song',
-          trackTitle: '[SONGTITEL]',
-          artist: '[INTERPRET]',
-          spotifyUrl: '[SPOTIFY TRACK URL]',
-          artwork: { src: '/media/photos/placeholder-record.svg', alt: '[PRIVATE PHOTO] Beispielbild: eine Schallplatte im Schnee' },
-          intro: ['Dieses Lied läuft bei mir in letzter Zeit ziemlich oft.'],
+          type: "song",
+          trackTitle: "Dove e quando",
+          artist: "Benji & Fede",
+          spotifyUrl: "https://open.spotify.com/track/5XM7tx8ovQ9UrYqUowW1AK?si=82234e595c644072",
+          artwork: {
+            src: "/media/photos/song1.png",
+            alt: "Dove e quando - Benji & Fede",
+          },
+          intro: ["Das Lied bringt mir immer es Lächle is gsicht."],
           whyItRemindsUs: [
-            '[YOUR MEMORY] Erzähl hier, wann ihr das Lied zum ersten Mal zusammen gehört habt und was es für dich bedeutet.',
+            "S erste mal wo ich gseh han, dass du das Lied au losisch han ich mega müsse lache. I dere Shared-Playlist vo Spotify wo eusi Musig Gschmäcker vermischt het. Finds immer so lustig, wie das Lied eifach alli kennet und mitsinget, aber nonie würklich no nie han ich erlebt, dass das öppert wo nöd Italienisch chan eifach so guet singt. Ich mein das im volle Ernst. Klar weisch viellicht nöd was es heisst oder die perfekti betonig (Cellulaaare) haha aber ich schwör es tönt sooo guet. Muss immer schmunzle. Nie wird ich das vergässe, wie mir bi mir gsie sind und ich i dini Auge gluegt han und du lossingsch. Das isch eine vo mine Lieblings Moment.",
           ],
         },
       ],
     },
     {
       day: 4,
-      title: 'Ein gemeinsamer Moment',
+      title: "En gmeinsame Moment",
       blocks: [
         {
-          type: 'memory',
-          title: '[TITEL DER ERINNERUNG]',
-          photos: [{ src: '/media/photos/placeholder-winter-walk.svg', alt: '[PRIVATE PHOTO] Beispielbild: zwei Spuren im Schnee' }],
-          date: '2025-01-18',
-          location: '[ORT]',
+          type: "memory",
+          title: "Euse ersti Kuss",
+          photos: [
+            {
+              src: "/media/photos/lily.png",
+              alt: "The lily",
+            },
+          ],
+          date: "2026-10-30",
+          location: "Bodenacherstrasse 12c, 8303 Bassersdorf",
           story: [
-            '[YOUR MEMORY] Beschreibe, was an diesem Tag passiert ist.',
-            'Und vor allem: warum dieser Moment für dich wichtig ist.',
+            "Mis Herz het so schnell gschlage, dass ich mich fast nöd han chöne zämerisse. De Film isch für mich vo ahfang ah öppis näbe sächlichs gsie. Han ich d Message vom Film schön gfunde. Absolut. The Lily means: I dear you to love me... Du uf minere Brust am ligge. Ich hetti dir det no so viel länger eifach id d Auge chöne luege. Han us nervosität d Intensivität immer wieder ufbroche hahaha. Aber han dich nöd wele stresse, will ich selber gmerkt han dass alles so schnell passiert. Ich hetti ja demit ufghört aber alles fühlt sich so guet und richtig ah. Nachdem ich es wieder unterbroche han mit erere wiitere Umarmig, bewegsch du dis Gsicht ganz wenig immer wiiter zu mir und denn s Füürwärch. No NIE han ich so öppis gfühlt. Ich han i dem Moment nöd gwüsst, was nochene chunnt aber bin mir so sicher gsie, dass das richtig sie muess.",
+            "Ab dem erste Kuss han ich nüme wele ufhöre dini Perfekte Lippe z küsse. Dich nie wieder gah z'lah das isch ganz klar gsie.",
           ],
         },
       ],
     },
     {
       day: 5,
-      title: 'Ein kleiner Gutschein',
+      title: "En chliine Guetschii",
       blocks: [
         {
-          type: 'voucher',
-          title: 'Ein Abend, den du dir aussuchst.',
-          description: 'Du entscheidest, was wir machen. Ich kümmere mich um den Rest.',
-          conditions: ['Einlösbar an einem Abend deiner Wahl', 'Kein Widerspruch meinerseits erlaubt'],
-          note: '[YOUR PERSONAL NOTE]',
+          type: "voucher",
+          title: "Ein Abend, wo ich ussuech",
+          description:
+            "Ich entscheide, was mir machet. Ich kümmere mich um alles, was du willst.",
+          conditions: [
+            "Ihlösbar amene abig vo dinere Wahl",
+            "Ich derf nie sege, dass du entscheide söllsch",
+            "Du derfsch Ihspruch erhebe, wenns dir nöd passt natürlich"
+          ],
+          note: "Eigentlich han ich en Abig wo du ussuechsch wele mache, sprich das isch das was anderi mache würet. Aber mir sind nöd so anderi und will mir beidi entscheide hasset machemer das halt so ume. ",
         },
       ],
     },
@@ -112,290 +125,336 @@ export default defineCalendar({
       // Door 6: the Samichlaus mission. The `blocks` below are the reward and
       // stay hidden in the interface until the game has been finished once.
       day: 6,
-      title: 'Eine kleine Mission',
+      title: "E chlini Mission",
       game: {
         intro: [
-          'Heute wartet eine kleine Mission auf dich. Hilf dem Samichlaus durch den verschneiten Winterwald.',
-          'Am Ziel wartet eine Nachricht nur für dich.',
+          "Heute wartet eine kleine Mission auf dich. Hilf dem Samichlaus durch den verschneiten Winterwald.",
+          "Am Ziel wartet eine Nachricht nur für dich.",
         ],
-        startLabel: 'Mission starten',
+        startLabel: "Mission starten",
         victoryText:
-          'Du hast es geschafft! Der Samichlaus hat seine Lieferung abgegeben. Diese kleine Nachricht ist nur für dich.',
+          "Du hast es geschafft! Der Samichlaus hat seine Lieferung abgegeben. Diese kleine Nachricht ist nur für dich.",
       },
       blocks: [
         {
-          type: 'letter',
-          title: 'Du hast es geschafft',
+          type: "letter",
+          title: "Heyyy, du hesch es gschaft.",
           paragraphs: [
-            '[YOUR GAME REWARD MESSAGE] Hier steht die Nachricht, die der Samichlaus für sie ausgetragen hat. Zum Beispiel: warum sie dich an den echten Grund für dieses Spiel erinnert, oder eine kleine Ankündigung für den 6. Dezember.',
-            'Danke, dass du dem Samichlaus geholfen hast.',
+            "Wowyyyyy. Okay isch jetzt nöd soo deep gsie hahaha aber anyways.",
+            "Danke, dass du em Samichlaus ghulfe hesch.",
           ],
-          signature: '[YOUR NAME]',
+          signature: "Selina <3",
         },
         {
-          type: 'voucher',
-          title: 'Ein Samichlaus-Säckli, von mir gepackt.',
-          description: 'Mandarinen, Nüsse, Schokolade und eine Überraschung. Abholbereit bei mir.',
-          note: '[YOUR PERSONAL NOTE]',
+          type: "voucher",
+          title: "Es chlines Gschänckli für dich",
+          description:
+            "Abhol parat bi mir.",
+          note: "Da du dich jetzt als echti Pro-Gamerin herusgstellt hesch, bechunsch, wenn mir eus s nächste mal gsehn en chline Priis vo mir hehe. Mal luege, öb du det genau so guet drin bisch. (Han gar kei Zwiifel)",
         },
       ],
     },
     {
       day: 7,
-      title: 'Drei kleine Gründe',
+      title: "Drüü chlini Gründ",
       blocks: [
         {
-          type: 'reasons',
-          title: 'Drei Dinge, die meinen Tag besser machen',
-          intro: 'Ganz unspektakulär und gerade deshalb wichtig:',
-          reasons: ['[REASON 1]', '[REASON 2]', '[REASON 3]'],
+          type: "reasons",
+          title: "Drüü Sache, wo min Tag besser machet",
+          intro: "Ganz unspektakulär und genau deswege wichtig:",
+          reasons: ["Dis Lächle", "Dini Verlägeheit mängisch und die schüüchi Art wo du mängisch hesch", "Whatsapp eifach Videos nach em schaffe oder de Schuel"],
         },
       ],
     },
     {
       day: 8,
-      title: 'Winterluft',
+      title: "Winterluft",
       blocks: [
         {
-          type: 'activity',
-          title: 'Eine kleine Winteraufgabe',
+          type: "activity",
+          title: "E chlini Winterufgab für dich",
           invitation: [
-            'Wenn du heute rausgehst: Mach ein Foto von etwas Winterlichem, das dich zum Lächeln bringt.',
-            'Du musst es niemandem zeigen. Aber ich würde mich freuen.',
+            "Wenn du hüt usegasch: Mach es Foti vo öppis Winterlichem, was dich zum Lächle bringt.",
+            "Du musch es niemertem zeige. Aber ich würd mich natürlich freue hehe",
           ],
-          ideas: ['Eisblumen an einem Fenster', 'Ein Licht in der Dämmerung', 'Deine Spuren im Schnee'],
+          ideas: [
+            "Ein Licht in der Dämmerung",
+            "Schneeball öppertem id Frässi hahaha",
+          ],
         },
       ],
     },
     {
       day: 9,
-      title: 'Noch ein Lied',
+      title: "Nomal es Lied",
       blocks: [
         {
-          type: 'song',
-          trackTitle: '[SONGTITEL]',
-          artist: '[INTERPRET]',
-          spotifyUrl: '[SPOTIFY TRACK URL]',
-          whyItRemindsUs: ['[YOUR MEMORY] Warum dich dieses Lied an euch erinnert.'],
+          type: "song",
+          trackTitle: "Bad Liar",
+          artist: "Anna Hamilton, The Acoustic Room",
+          spotifyUrl: "https://open.spotify.com/track/0X9MxHR1rTkEHDjp95F2OO?si=c17d255d605a46f9",
+          whyItRemindsUs: [
+            "Ach hahaha das Lied. Schrecklich minere Meinig nach. Aber jedesmal wenn ich die Playlist lose (was eigentlich immer isch) und das Lied ufchunnt muss ich sooo lache. Naja die Version isch wük nöd mies, aber für dich würd ich mir das Lied uf durschleife ine zieh, wenn es dich glücklich mache würd. Und ja es isch scho schön aber s Original immerno besser hehe",
+          ],
         },
       ],
     },
     {
       day: 10,
-      title: 'Weisst du noch?',
+      title: "Weisch no?",
       blocks: [
         {
-          type: 'memory',
-          title: 'Der Moment, in dem wir nicht mehr aufhören konnten zu lachen',
-          photos: [{ src: '/media/photos/placeholder-window.svg', alt: '[PRIVATE PHOTO] Beispielbild: ein erleuchtetes Fenster' }],
-          dateLabel: '[WANN WAR DAS?]',
-          story: ['[YOUR FUNNY MEMORY] Erzähl die Geschichte so, wie ihr sie euch heute noch erzählt.'],
+          type: "memory",
+          title: "De Moment, wo du mir es Lächle ins Gsicht zauberet hesch",
+          videos: [
+            {
+              src: "/media/videos/Oktoberfest.mp4",
+              alt: "Oktoberfeset",
+            },
+          ],
+          dateLabel: "24.10.2026",
+          story: [
+            "Ich i dem Dirndel hahaha. Ich wird mich nie demit ahfründe chöne. Aber du hesch mir so viel Kompliment gmacht und mich so supported ih allem. Das han ich so enorm gschetzt du weisch nöd. Wie du mir zuegluegt hesch und all eusi Gspröch, wird ich nie vergässe. Eventuell isch mir ganz klar gsie, was weli Siite vo de Masche vom Dirndel heisst. Han ich viellicht extra dich Google lah. Man Munkelt hehe. Aber wo du mir die Schleife nochene rechts bindisch und ich dir ghöre dörf au wenns nur für de Abig det zu mals gsie isch. Das Lache isch mir nüme us em Gsicht sit det ah. Und vergessemer de Choker nöd... Wildi fantasie hesch du mir det erweckt.",
+          ],
         },
       ],
     },
     {
       day: 11,
-      title: 'Ein Bild und seine Geschichte',
+      title: "Es Bild mit erere Gschicht",
       blocks: [
         {
-          type: 'memory',
+          type: "memory",
           photos: [
             {
-              src: '/media/photos/placeholder-market.svg',
-              alt: '[PRIVATE PHOTO] Beispielbild: Lichter auf einem Weihnachtsmarkt',
-              caption: '[BILDUNTERSCHRIFT]',
+              src: "/media/photos/eyes.jpeg",
+              alt: "Eyes",
+              caption: "Eusi Auge",
             },
           ],
-          location: '[ORT]',
-          story: ['[YOUR MEMORY] Eine kurze Geschichte zu diesem Bild.'],
+          location: "Assisi, Italien 11-16.10.2026",
+          story: ["Ich weiss nöd öb es dir ufgfalle isch, aber han im Lager so oft soooo tüüf i dini Auge gluegt und dir Kompliment für dini Auge gmacht. Sie hend mich würklich eifach fasziniert und hans Gfühl gha die hend no so viel z'verzehle. Ich will alles usefinde was dehinter steckt. Jetzt bin ich am Punkt wo ich die Möglichkeit han und wow... Bin parat für alles was no chunnt und chans chum abwarte die Auge no Stunde und Jahre lang z'betrachte."],
         },
       ],
     },
     {
       day: 12,
-      title: 'Eine Einladung',
+      title: "E Ihladig für dich",
       blocks: [
         {
-          type: 'activity',
-          title: 'Ein gemütlicher Abend',
+          type: "activity",
+          title: "En gmüetliche Abig zäme",
           invitation: [
-            'Ich lade dich zu einem Abend ein, an dem wir nichts müssen. Decke, Kerzen, etwas Warmes zu trinken.',
-            'Du bringst nur dich mit.',
+            "Ich lade dich zumene Abig bi mir ih. Mir müend nüt mache. Decki, Cherze, öppis Warms zum trinke.",
+            "Du bringsch nur dich mit.",
           ],
-          ideas: ['Ein Film, den du aussuchst', 'Ein Spiel, bei dem ich vermutlich verliere', '[YOUR IDEA]'],
-          note: 'Sag mir einfach, wann es dir passt.',
+          note: "Han mal so de 19 uf de 20ti im Chopf gha, will am 20te gömmer ja denn zäme an Wiehnachtsmärt. Aber chömmer denn no luege je nach dem.",
         },
       ],
     },
     {
       day: 13,
-      title: 'Eine Nachricht zum Anhören',
+      title: "Eine Nachricht zum Anhören",
       blocks: [
         {
-          type: 'voice',
-          title: 'Für dich aufgenommen',
-          intro: ['Heute gibt es etwas zum Anhören. Am schönsten mit einer Tasse Tee.'],
-          audio: { src: '/media/audio/placeholder-voice.wav' },
-          durationLabel: '0:03',
-          transcript: ['[TRANSCRIPT] Hier steht später, was in der Sprachnachricht gesagt wird.'],
+          type: "voice",
+          title: "Für dich aufgenommen",
+          intro: [
+            "Heute gibt es etwas zum Anhören. Am schönsten mit einer Tasse Tee.",
+          ],
+          audio: { src: "/media/audio/placeholder-voice.wav" },
+          durationLabel: "0:03",
+          transcript: [
+            "[TRANSCRIPT] Hier steht später, was in der Sprachnachricht gesagt wird.",
+          ],
         },
       ],
     },
     {
       day: 14,
-      title: 'Eine Playlist für dich',
+      title: "Es wahrs Lied",
       blocks: [
         {
-          type: 'playlist',
-          title: '[PLAYLIST-NAME]',
-          spotifyUrl: '[SPOTIFY PLAYLIST URL]',
-          intro: ['Ich habe ein paar Lieder gesammelt, die mich an dich denken lassen.'],
-          highlights: [
-            { trackTitle: '[SONGTITEL]', artist: '[INTERPRET]', note: '[WARUM DIESES LIED?]' },
-            { trackTitle: '[SONGTITEL]', artist: '[INTERPRET]' },
+          type: "song",
+          trackTitle: "we fell in love in october",
+          artist: "girl in red",
+          spotifyUrl: "https://open.spotify.com/track/6IPwKM3fUUzlElbvKw2sKl?si=0307fd9be0f948fb",
+          artwork: {
+            src: "/media/photos/song3.png",
+            alt: "we fell in love in october - girl in red",
+          },
+          intro: ["Das Lied chönnti nöd wahrer sii."],
+          whyItRemindsUs: [
+            "Was isch d Chance, dass das passiert. Im Oktober richtig kenneglernt und det gwüsst: You will be my world. Und jetzt simmer im Dezember und ich chönnti mir nöd sicherer sii. Und jedi Ziile wo sie singt unterschriib ich zu 100%. Hehe und girl in red eh e queen. Props nomal ad Laura für de Wingwoman move mit I wanna be your girlfriend hehe.",
           ],
         },
       ],
     },
     {
       day: 15,
-      title: 'Ein Gutschein für dich',
+      title: "Es ganz chlises Gschänckli",
       blocks: [
         {
-          type: 'voucher',
-          title: 'Ein Frühstück, das ich für dich vorbereite.',
-          description: 'Mit allem, was du magst, und ohne dass du früh aufstehen musst.',
-          note: '[YOUR PERSONAL NOTE]',
+          type: "voucher",
+          title: "Es ganz chlises Gschänckli",
+          description:
+            "Du derfsch jetzt dis chline Päckli ufmache. ",
+          note: "Es isch nüt grosses, aber finds mega herzig. Du chasch dir ussueche weles und denn mir s andere gäh. Hihihi",
         },
       ],
     },
     {
       day: 16,
-      title: 'Ein Wunsch für später',
+      title: "En Wunsch für spöter",
       blocks: [
         {
-          type: 'letter',
-          title: 'Irgendwann möchte ich mit dir …',
-          paragraphs: ['[YOUR FUTURE PLAN] Ein Ort, eine Reise oder etwas ganz Kleines, das du mit ihr erleben möchtest.'],
+          type: "letter",
+          title: "Irgendwann will ich mit dir …",
+          paragraphs: [
+            "Irendwenn will ich mit dir ih e Stadt reise, wo mir no nie gsie sind und die entdecke. Zäme i Restis gah wo mir nöd kännet und det neus gseh und usprobiere.",
+            "Irgendwenn will ich mit dir an es Konzert gah und dir zeige, wie ich ufgahn wenn ich Musig ghöre vo mine lieblings Künstler und gseh wie du singsch und alles us dinere Lunge use schreisch.",
+          ],
         },
       ],
     },
     {
       day: 17,
-      title: 'Das Lied von damals',
+      title: "S erste Lied",
       blocks: [
         {
-          type: 'song',
-          trackTitle: '[SONGTITEL]',
-          artist: '[INTERPRET]',
-          spotifyUrl: '[SPOTIFY TRACK URL]',
-          intro: ['Dieses Lied gehört für mich zu einem ganz bestimmten Moment.'],
-          whyItRemindsUs: ['[YOUR MEMORY] Welcher Moment ist das?'],
+          type: "song",
+          trackTitle: "Prada",
+          artist: "RAYE, Cassö, D-Block Europe",
+          spotifyUrl: "https://open.spotify.com/track/59NraMJsLaMCVtwXTSia8i?si=7ca66e8aee4a4ad0",
+          intro: [
+            "Das Lied het e ganz spezielli Bedütig.",
+          ],
+          whyItRemindsUs: ["Wo mir in Azzizi gsie sind und du i mim Ämtli Team gsie bisch han ich mich natürlich gfreut hehe. Aber wo mir so produktiv i de Chuchi gsie sind han ich dich gfrögt, öb du hesch wele Musig laufe lah und du hesch denn genau Prada laufe lah und bisch schockiert gsie, dass ich das Lied kenne."],
         },
       ],
     },
     {
       day: 18,
-      title: 'Ein kurzer Brief',
+      title: "En churze Brief",
       blocks: [
         {
-          type: 'letter',
-          paragraphs: ['[YOUR SHORT LETTER]'],
-          signature: '[YOUR NAME]',
+          type: "letter",
+          paragraphs: ["Also ich probier mich churz z'hebe, wird schwierig but I'll try.",
+            "Früehner han ich nie a TeenageLove glaubt, han dir das glaub scho öfters gseit. Aber sit du i mis Lebe trette bisch het sich mini Meinig um 180 grad gkehrt. Ich will gar nüt da sege. Egal was in Zuekunft cho wird, weiss ich dass ich jedi Sekunde gnüsse wird. Mer weiss nähmlich nie wenn es die letzti isch. Leider han ich das das Jahr au wieder uf die herti Tour müsse lerne. Deswege jedi Sekunde, jede Hunderstel gnüsse und s'Beste drus mache. Us jedere Situation."
+          ],
+          signature: "Selina <3",
         },
       ],
     },
     {
       day: 19,
-      title: 'Eine kleine Herausforderung',
+      title: "E chlini Challenge",
       blocks: [
         {
-          type: 'activity',
-          title: 'Wer findet das schönste Licht?',
+          type: "activity",
+          title: "Wer findet s schönste Wiehachtsliecht?",
           invitation: [
-            'Heute suchen wir beide unabhängig voneinander das schönste Weihnachtslicht in unserer Umgebung.',
-            'Am Abend vergleichen wir. Es gibt keinen Preis, nur Bewunderung.',
+            "Hüt suechemer beidi unabhängig vonenand s'schönste Wiehnachtsliecht i eusere Umgebig.",
+            "Am Abig vergliichemer.",
+            "Schriib mer bitte schnell, damit ich weiss, dass es hüt isch haha"
           ],
         },
       ],
     },
     {
       day: 20,
-      title: 'Eine Lieblingserinnerung',
+      title: "Eine Lieblingserinnerung",
       blocks: [
         {
-          type: 'memory',
+          type: "memory",
           photos: [
-            { src: '/media/photos/placeholder-cocoa.svg', alt: '[PRIVATE PHOTO] Beispielbild: zwei Tassen heisse Schokolade' },
-            { src: '/media/photos/placeholder-winter-walk.svg', alt: '[PRIVATE PHOTO] Beispielbild: ein verschneiter Weg' },
+            {
+              src: "/media/photos/placeholder-cocoa.svg",
+              alt: "[PRIVATE PHOTO] Beispielbild: zwei Tassen heisse Schokolade",
+            },
+            {
+              src: "/media/photos/placeholder-winter-walk.svg",
+              alt: "[PRIVATE PHOTO] Beispielbild: ein verschneiter Weg",
+            },
           ],
-          date: '2024-12-21',
-          location: '[ORT]',
-          story: ['[YOUR FAVOURITE MEMORY]'],
+          date: "2024-12-21",
+          location: "[ORT]",
+          story: ["[YOUR FAVOURITE MEMORY]"],
         },
       ],
     },
     {
       day: 21,
-      title: 'Worauf ich mich freue',
+      title: "Worauf ich mich freue",
       blocks: [
         {
-          type: 'reasons',
-          title: 'Dinge, auf die ich mich mit dir freue',
-          reasons: ['[THING 1]', '[THING 2]', '[THING 3]', '[THING 4]'],
+          type: "reasons",
+          title: "Dinge, auf die ich mich mit dir freue",
+          reasons: ["[THING 1]", "[THING 2]", "[THING 3]", "[THING 4]"],
         },
         {
-          type: 'voucher',
-          title: 'Ein Spaziergang mit heisser Schokolade.',
-          description: 'Wann immer du Lust hast. Die Schokolade bringe ich mit.',
+          type: "voucher",
+          title: "Ein Spaziergang mit heisser Schokolade.",
+          description:
+            "Wann immer du Lust hast. Die Schokolade bringe ich mit.",
         },
       ],
     },
     {
       day: 22,
-      title: 'Ein Brief mit Bild',
+      title: "Ein Brief mit Bild",
       blocks: [
         {
-          type: 'letter',
-          paragraphs: ['[YOUR PHOTO LETTER] Ein paar Zeilen zu dem Bild unten.'],
+          type: "letter",
+          paragraphs: [
+            "[YOUR PHOTO LETTER] Ein paar Zeilen zu dem Bild unten.",
+          ],
         },
         {
-          type: 'memory',
-          photos: [{ src: '/media/photos/placeholder-window.svg', alt: '[PRIVATE PHOTO] Beispielbild: Kerzenlicht am Fenster' }],
-          story: ['[YOUR MEMORY]'],
+          type: "memory",
+          photos: [
+            {
+              src: "/media/photos/placeholder-window.svg",
+              alt: "[PRIVATE PHOTO] Beispielbild: Kerzenlicht am Fenster",
+            },
+          ],
+          story: ["[YOUR MEMORY]"],
         },
       ],
     },
     {
       day: 23,
-      title: 'Morgen ist es so weit',
+      title: "Morgen ist es so weit",
       blocks: [
         {
-          type: 'letter',
+          type: "letter",
           paragraphs: [
-            'Nur noch einmal schlafen. Das letzte Türchen ist das grösste im Dorf.',
-            '[YOUR ANTICIPATION NOTE]',
+            "Nur noch einmal schlafen. Das letzte Türchen ist das grösste im Dorf.",
+            "[YOUR ANTICIPATION NOTE]",
           ],
         },
       ],
     },
     {
       day: 24,
-      title: 'Das letzte Türchen',
+      title: "Das letzte Türchen",
       blocks: [
         {
-          type: 'finalLetter',
-          title: 'Liebe [NAME]',
+          type: "finalLetter",
+          title: "Liebi Joya",
           paragraphs: [
-            '[YOUR FINAL LETTER] Hier ist Platz für einen längeren Brief.',
-            'Danke für jeden Tag in diesem Dezember, an dem du ein Türchen geöffnet hast.',
+            "[YOUR FINAL LETTER] Hier ist Platz für einen längeren Brief.",
+            "Danke für jeden Tag in diesem Dezember, an dem du ein Türchen geöffnet hast.",
           ],
-          photo: { src: '/media/photos/placeholder-stars.svg', alt: '[PRIVATE PHOTO] Beispielbild: ein Sternenhimmel über dem Dorf' },
-          finalSurprise: {
-            title: 'Und noch etwas',
-            paragraphs: ['[YOUR FINAL SURPRISE]'],
+          photo: {
+            src: "/media/photos/placeholder-stars.svg",
+            alt: "[PRIVATE PHOTO] Beispielbild: ein Sternenhimmel über dem Dorf",
           },
-          signature: '[YOUR NAME]',
+          finalSurprise: {
+            title: "Und noch etwas",
+            paragraphs: ["[YOUR FINAL SURPRISE]"],
+          },
+          signature: "Selina <3",
         },
       ],
     },

@@ -76,3 +76,19 @@ export async function readProgress(page: Page) {
     return raw ? (JSON.parse(raw) as Record<string, unknown>) : null;
   }, PROGRESS_KEY);
 }
+
+// Door content comes straight from the calendar, so editing the texts never
+// breaks these tests.
+import calendar from '../../src/content/calendar.ts';
+
+export function titleOf(day: number): string {
+  const found = calendar.doors.find((d) => d.day === day);
+  if (!found) throw new Error(`Door ${day} not found`);
+  return found.title;
+}
+
+export function contentOf(day: number) {
+  const found = calendar.doors.find((d) => d.day === day);
+  if (!found) throw new Error(`Door ${day} not found`);
+  return found;
+}

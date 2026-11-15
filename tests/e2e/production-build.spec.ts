@@ -7,7 +7,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { createServer, type Server } from 'node:http';
 import path from 'node:path';
 import { expect, test } from '@playwright/test';
-import { door, visit, YEAR, zurichInstant } from './helpers.ts';
+import { door, titleOf, visit, YEAR, zurichInstant } from './helpers.ts';
 
 const dist = path.resolve('dist');
 const toml = readFileSync('netlify.toml', 'utf8');
@@ -136,7 +136,7 @@ test('the app works with the device clock only, offline after the first load', a
   // Cut the network: the date policy and local progress must keep working.
   await context.setOffline(true);
   await door(page, 5).click();
-  await expect(page.getByRole('dialog', { name: 'Ein kleiner Gutschein' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: titleOf(5) })).toBeVisible();
   await context.setOffline(false);
   notFound.length = 0;
 });

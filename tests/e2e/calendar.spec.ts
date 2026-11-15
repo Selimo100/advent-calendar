@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { door, readProgress, visit, YEAR, zurichInstant } from './helpers.ts';
+import { contentOf, door, readProgress, titleOf, visit, YEAR, zurichInstant } from './helpers.ts';
 
 test('opens straight into the calendar, with no login screen', async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 5) });
@@ -17,15 +17,28 @@ test('shows a countdown and a welcome before December', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Zum heutigen Türchen' })).toHaveCount(0);
 });
 
+function voucherTitle(day: number): string {
+  const block = contentOf(day).blocks.find((b) => b.type === 'voucher');
+  if (!block || block.type !== 'voucher') throw new Error(`Door ${day} has no voucher`);
+  return block.title;
+}
+
+function firstPhotoAlt(day: number): string {
+  const block = contentOf(day).blocks.find((b) => b.type === 'memory');
+  const photo = block?.type === 'memory' ? block.photos?.[0] : undefined;
+  if (!photo) throw new Error(`Door ${day} has no memory photo`);
+  return photo.alt;
+}
+
 test("opens today's door and shows the surprise in an accessible dialog", async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 5) });
   await expect(page.getByText('Türchen 5 wartet auf dich.')).toBeVisible();
   await page.getByRole('button', { name: 'Zum heutigen Türchen' }).click();
   await expect(door(page, 5)).toBeFocused();
   await door(page, 5).click();
-  const dialog = page.getByRole('dialog', { name: 'Ein kleiner Gutschein' });
+  const dialog = page.getByRole('dialog', { name: titleOf(5) });
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByText('Ein Abend, den du dir aussuchst.')).toBeVisible();
+  await expect(dialog.getByText(voucherTitle(5))).toBeVisible();
   await expect(door(page, 5)).toHaveAttribute('data-state', 'opened');
 
   // Escape closes the dialog and focus returns to the door.
@@ -87,25 +100,25 @@ test('only one new door per calendar date', async ({ page }) => {
 test('revisiting an opened door does not use up the day', async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 5), progress: { opened: [1, 2] } });
   await door(page, 1).click();
-  await expect(page.getByRole('dialog', { name: 'Willkommen im Dorf' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: titleOf(1) })).toBeVisible();
   await page.keyboard.press('Escape');
   // Today's door is still available after reading an old memory.
   await expect(door(page, 5)).toHaveAttribute('data-state', 'available');
   await door(page, 5).click();
-  await expect(page.getByRole('dialog', { name: 'Ein kleiner Gutschein' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: titleOf(5) })).toBeVisible();
 });
 
 test('navigation in the dialog only reaches opened doors', async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 26, 10), progress: { opened: [3, 4, 11] } });
   await expect(page.getByText('3 geöffnete Türchen sind hier für dich aufbewahrt.')).toBeVisible();
-  await page.getByRole('region', { name: 'Geöffnete Türchen' }).getByRole('button', { name: /Ein gemeinsamer Moment/ }).click();
-  const dialog = page.getByRole('dialog', { name: 'Ein gemeinsamer Moment' });
+  await page.getByRole('region', { name: 'Geöffnete Türchen' }).getByRole('button', { name: titleOf(4) }).click();
+  const dialog = page.getByRole('dialog', { name: titleOf(4) });
   await expect(dialog).toBeVisible();
-  const image = dialog.getByRole('img', { name: /zwei Spuren im Schnee/ });
+  const image = dialog.getByRole('img', { name: firstPhotoAlt(4) });
   await expect(image).toBeVisible();
   await expect.poll(() => image.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
   await dialog.getByRole('button', { name: 'Türchen 11' }).click();
-  await expect(page.getByRole('dialog', { name: 'Ein Bild und seine Geschichte' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: titleOf(11) })).toBeVisible();
   await expect(page.getByRole('dialog').getByRole('button', { name: /Türchen 12/ })).toHaveCount(0);
 });
 
@@ -115,7 +128,7 @@ test('after 24 December opened doors stay readable and missed ones stay closed',
   await expect(door(page, 1)).toHaveAttribute('data-state', 'opened');
   await expect(door(page, 24)).toHaveAttribute('data-state', 'missed');
   await door(page, 1).click();
-  await expect(page.getByRole('dialog', { name: 'Willkommen im Dorf' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: titleOf(1) })).toBeVisible();
 });
 
 test('the same calendar does not restart in another year', async ({ page }) => {
@@ -165,7 +178,7 @@ test('works when localStorage is unavailable, and says so', async ({ page }) => 
   await expect(page.getByText(/Fortschritt kann in diesem Browser gerade nicht gespeichert werden/)).toBeVisible();
   // The calendar still works for this visit.
   await door(page, 5).click();
-  await expect(page.getByRole('dialog', { name: 'Ein kleiner Gutschein' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: titleOf(5) })).toBeVisible();
 });
 
 test('reduced motion opens without the door animation and without snow', async ({ page }) => {
@@ -173,7 +186,7 @@ test('reduced motion opens without the door animation and without snow', async (
   await visit(page, { at: zurichInstant(YEAR, 12, 5) });
   await expect(page.locator('.snowfall')).toHaveCount(0);
   await door(page, 5).click();
-  await expect(page.getByRole('dialog', { name: 'Ein kleiner Gutschein' })).toBeVisible({ timeout: 1500 });
+  await expect(page.getByRole('dialog', { name: titleOf(5) })).toBeVisible({ timeout: 1500 });
 });
 
 test('audio is never set to autoplay', async ({ page }) => {

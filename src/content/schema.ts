@@ -51,8 +51,20 @@ export const audioSchema = z.strictObject({
   src: mediaPath('audio', 'mp3|m4a|aac|wav|ogg|opus|webm'),
 });
 
+export const videoSchema = z.strictObject({
+  src: mediaPath('videos', 'mp4|m4v|webm|mov'),
+  /** Short description of what the video shows (for screen readers). */
+  alt: text(300),
+  caption: text(200).optional(),
+  /** Optional still frame from public/media/photos/, shown before playback. */
+  poster: mediaPath('photos', 'jpg|jpeg|png|webp|avif|gif|svg').optional(),
+  width: z.number().int().positive().optional(),
+  height: z.number().int().positive().optional(),
+});
+
 export type Photo = z.infer<typeof photoSchema>;
 export type Audio = z.infer<typeof audioSchema>;
+export type Video = z.infer<typeof videoSchema>;
 
 // ---------------------------------------------------------------------------
 // Blocks
@@ -64,15 +76,21 @@ const letter = z.strictObject({
   paragraphs,
   signature: text(160).optional(),
 });
-const memory = z.strictObject({
-  type: z.literal('memory'),
-  title: text(160).optional(),
-  photos: z.array(photoSchema).min(1).max(6),
-  date: isoDate.optional(),
-  dateLabel: text(80).optional(),
-  location: text(120).optional(),
-  story: paragraphs,
-});
+const memory = z
+  .strictObject({
+    type: z.literal('memory'),
+    title: text(160).optional(),
+    photos: z.array(photoSchema).min(1).max(6).optional(),
+    videos: z.array(videoSchema).min(1).max(3).optional(),
+    date: isoDate.optional(),
+    dateLabel: text(80).optional(),
+    location: text(120).optional(),
+    story: paragraphs,
+  })
+  .refine((block) => block.photos || block.videos, {
+    message: 'A memory needs at least one photo or video',
+    path: ['photos'],
+  });
 const song = z.strictObject({
   type: z.literal('song'),
   trackTitle: text(160),

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { door, readProgress, visit, YEAR, zurichInstant } from './helpers.ts';
+import { door, readProgress, titleOf, visit, YEAR, zurichInstant } from './helpers.ts';
 
 const REWARD_TEXT = /Hier steht die Nachricht, die der Samichlaus/;
 
@@ -13,7 +13,7 @@ test('door 6 can only be opened for the first time on 6 December', async ({ page
 test('door 6 shows the mission, and the reward is not in the page before victory', async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 6) });
   await door(page, 6).click();
-  const dialog = page.getByRole('dialog', { name: 'Eine kleine Mission' });
+  const dialog = page.getByRole('dialog', { name: titleOf(6) });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByText(/Hilf dem Samichlaus durch den verschneiten Winterwald/)).toBeVisible();
   await expect(dialog.getByRole('button', { name: 'Mission starten' })).toBeVisible();
@@ -39,7 +39,7 @@ test('the mission can be continued on a later day without using that day', async
 
   // And today's door still opens normally afterwards.
   await door(page, 10).click();
-  await expect(page.getByRole('dialog', { name: 'Weisst du noch?' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: titleOf(10) })).toBeVisible();
 });
 
 test('the game runs, responds to the keyboard and can be paused', async ({ page }) => {
@@ -145,7 +145,7 @@ test('after victory the reward is readable and survives a reload', async ({ page
   await expect(page.getByText('Der Samichlaus ist noch unterwegs. Deine Mission wartet.')).toHaveCount(0);
 
   await door(page, 6).click();
-  const dialog = page.getByRole('dialog', { name: 'Eine kleine Mission' });
+  const dialog = page.getByRole('dialog', { name: titleOf(6) });
   await expect(dialog.getByText(REWARD_TEXT)).toBeVisible();
   await expect(dialog.getByText('Mission erfüllt')).toBeVisible();
   await expect(dialog.getByRole('button', { name: 'Noch einmal spielen' })).toBeVisible();

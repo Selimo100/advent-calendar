@@ -37,7 +37,10 @@ if (!parsed.success) {
 function mediaOf(block: Block): string[] {
   switch (block.type) {
     case 'memory':
-      return block.photos.map((photo) => photo.src);
+      return [
+        ...(block.photos ?? []).map((photo) => photo.src),
+        ...(block.videos ?? []).flatMap((video) => (video.poster ? [video.src, video.poster] : [video.src])),
+      ];
     case 'song':
       return block.artwork ? [block.artwork.src] : [];
     case 'voice':

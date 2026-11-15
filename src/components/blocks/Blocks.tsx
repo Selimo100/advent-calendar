@@ -4,7 +4,7 @@ import { isPlaceholder } from '../../content/placeholders.ts';
 import { parseSpotifyUrl, spotifyEmbedUrl, type SpotifyKind } from '../../content/spotify.ts';
 import { isoToGerman } from '../../lib/format.ts';
 import { CalendarIcon, ExternalIcon, MapPinIcon, MicIcon, MusicIcon, StarIcon } from '../icons.tsx';
-import { StaticAudio, StaticImage } from './Media.tsx';
+import { StaticAudio, StaticImage, StaticVideo } from './Media.tsx';
 import { Inline, Paragraphs } from './Text.tsx';
 
 type Block<T extends ContentBlock['type']> = Extract<ContentBlock, { type: T }>;
@@ -42,8 +42,11 @@ function MemoryBlock({ block }: { block: Block<'memory'> }) {
     <section>
       <Kicker>Erinnerung</Kicker>
       {block.title && <SectionTitle>{block.title}</SectionTitle>}
-      <div className={`grid gap-4 ${block.photos.length > 1 ? 'sm:grid-cols-2' : ''}`}>
-        {block.photos.map((photo, i) => (
+      <div className={`grid gap-4 ${(block.photos?.length ?? 0) + (block.videos?.length ?? 0) > 1 ? 'sm:grid-cols-2' : ''}`}>
+        {block.videos?.map((video, i) => (
+          <StaticVideo key={video.src} video={video} className={i % 2 ? 'rotate-[1.2deg]' : '-rotate-[1deg]'} />
+        ))}
+        {block.photos?.map((photo, i) => (
           <StaticImage key={photo.src} photo={photo} className={i % 2 ? 'rotate-[1.2deg]' : '-rotate-[1deg]'} />
         ))}
       </div>
@@ -69,46 +72,44 @@ function MemoryBlock({ block }: { block: Block<'memory'> }) {
 }
 
 function SpotifyLink({ url, kind, label }: { url: string; kind: SpotifyKind; label: string }) {
-  const [embed, setEmbed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const parsed = isPlaceholder(url) ? null : parseSpotifyUrl(url, kind);
   if (!parsed) {
     return <p className="rounded-lg bg-black/5 px-3 py-2 text-sm text-ink-soft">Der Spotify-Link folgt noch ({url}).</p>;
   }
+  const height = kind === 'track' ? 152 : 352;
   return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap gap-2">
-        <a
-          href={parsed.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-evergreen px-4 font-semibold text-ivory"
-        >
-          In Spotify öffnen
-          <ExternalIcon className="h-4 w-4" />
-          <span className="sr-only">(öffnet Spotify in einem neuen Fenster)</span>
-        </a>
-        {!embed && (
-          <button
-            type="button"
-            onClick={() => setEmbed(true)}
-            className="inline-flex min-h-11 items-center rounded-full border border-evergreen/40 px-4 font-semibold text-evergreen"
-          >
-            Player hier laden
-          </button>
+    <div className="space-y-2">
+      <div className="relative overflow-hidden rounded-xl bg-midnight shadow-lg" style={{ height }}>
+        {!loaded && (
+          <div className="absolute inset-0 grid place-items-center text-sm text-ivory-dim" aria-hidden="true">
+            <span className="inline-flex items-center gap-2">
+              <MusicIcon className="h-4 w-4 animate-pulse" />
+              Spotify-Player wird geladen …
+            </span>
+          </div>
         )}
-      </div>
-      {embed && (
         <iframe
           title={`Spotify-Player: ${label}`}
-          src={spotifyEmbedUrl(kind, parsed.id)}
-          className="w-full rounded-xl border-0"
-          height={kind === 'track' ? 152 : 352}
+          src={`${spotifyEmbedUrl(kind, parsed.id)}?utm_source=generator`}
+          className={`relative block h-full w-full border-0 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+          height={height}
           loading="lazy"
-          allow="encrypted-media; clipboard-write; fullscreen; picture-in-picture"
+          onLoad={() => setLoaded(true)}
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           referrerPolicy="strict-origin-when-cross-origin"
         />
-      )}
-      {embed && <p className="text-xs text-ink-soft">Ob das ganze Lied abgespielt wird, hängt von deinem Spotify-Konto ab.</p>}
+      </div>
+      <a
+        href={parsed.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-evergreen underline-offset-4 hover:underline"
+      >
+        In Spotify öffnen
+        <ExternalIcon className="h-3.5 w-3.5" />
+        <span className="sr-only">(öffnet Spotify in einem neuen Fenster)</span>
+      </a>
     </div>
   );
 }
