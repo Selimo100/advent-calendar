@@ -1,80 +1,206 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CalendarOverview } from '../../shared/api.ts';
-import { api, ApiFailure } from './api.ts';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { CalendarSettings } from '../content/schema.ts';
+import { CALENDAR } from './calendarData.ts';
+import {
+  calendarPhase,
+  deriveDoorState,
+  doorDayForDate,
+  evaluateFirstOpening,
+  nextTransitionAt,
+  calendarStartsAt,
+  ALL_DOOR_DAYS,
+  type CalendarPhase,
+  type FirstOpeningDenial,
+  type PolicyDoorState,
+} from './calendarPolicy.ts';
+import { createProgressStore, type GameState, type Prefs, type Progress } from './calendarStorage.ts';
+import { currentInstant, DEV_CHANGE_EVENT } from './clock.ts';
+import { toIsoDate, zurichLocalDate, type LocalDate } from './time.ts';
 
-export type CalendarStatus =
-  | { kind: 'loading' }
-  | { kind: 'signed-out'; reason?: 'expired' }
-  | { kind: 'error'; failure: ApiFailure }
-  | { kind: 'ready'; overview: CalendarOverview; offset: number; stale: boolean };
+export type DoorState = PolicyDoorState;
+
+export interface DoorSummary {
+  day: number;
+  state: DoorState;
+  /** Only for opened doors. */
+  openedAt?: string;
+  /** Only for opened doors. */
+  title?: string;
+}
+
+export interface Overview {
+  calendar: { id: string; year: number; settings: CalendarSettings };
+  today: LocalDate;
+  phase: CalendarPhase;
+  todayDoor: number | null;
+  startsAt: Date;
+  nextTransitionAt: Date | null;
+  doors: DoorSummary[];
+  progress: { opened: number; total: number };
+}
+
+export type OpenOutcome =
+  | { ok: true; openedAt: string; firstOpen: boolean }
+  | { ok: false; reason: FirstOpeningDenial };
+
+/** Longest single timer: browsers clamp and throttle long timeouts. */
+const MAX_TIMER_MS = 6 * 3_600_000;
 
 /**
- * Loads the overview and keeps it fresh: on mount, when the tab becomes
- * visible, after reconnecting, and at the server-provided next transition.
- * A countdown reaching zero only triggers revalidation; it never unlocks.
+ * Derives the whole calendar state locally: bundled content + localStorage
+ * progress + the device clock (Europe/Zurich). Re-derives at Zurich midnight,
+ * when the page becomes visible, on focus, after progress changes, and when
+ * another tab writes progress.
  */
 export function useCalendar() {
-  const [status, setStatus] = useState<CalendarStatus>({ kind: 'loading' });
-  const inFlight = useRef<Promise<void> | null>(null);
-  const statusRef = useRef(status);
-  statusRef.current = status;
+  const store = useMemo(() => createProgressStore(CALENDAR.calendarId, CALENDAR.year), []);
+  const [progress, setProgress] = useState<Progress>(() => store.read());
+  const [now, setNow] = useState<Date>(() => currentInstant());
+  // True once any write failed or storage is unusable; shows a gentle notice.
+  const [storageWarning, setStorageWarning] = useState(() => !store.available);
+  const progressRef = useRef(progress);
+  progressRef.current = progress;
 
-  const refresh = useCallback(async () => {
-    if (inFlight.current) return inFlight.current;
-    const run = (async () => {
-      try {
-        const sentAt = Date.now();
-        const overview = await api.calendar();
-        const receivedAt = Date.now();
-        const offset = new Date(overview.serverTime).getTime() - (sentAt + receivedAt) / 2;
-        setStatus({ kind: 'ready', overview, offset, stale: false });
-      } catch (error) {
-        const failure = error instanceof ApiFailure ? error : new ApiFailure('BACKEND_UNAVAILABLE', 0);
-        if (failure.code === 'UNAUTHENTICATED') {
-          setStatus({ kind: 'signed-out', reason: statusRef.current.kind === 'ready' ? 'expired' : undefined });
-        } else if (statusRef.current.kind === 'ready') {
-          setStatus({ ...statusRef.current, stale: true });
-        } else {
-          setStatus({ kind: 'error', failure });
-        }
-      } finally {
-        inFlight.current = null;
-      }
-    })();
-    inFlight.current = run;
-    return run;
-  }, []);
+  const tick = useCallback(() => setNow(currentInstant()), []);
 
+  // External changes: other tabs writing progress.
+  useEffect(
+    () =>
+      store.subscribe(() => {
+        setProgress(store.read());
+        tick();
+      }),
+    [store, tick],
+  );
+
+  // Visibility / focus / bfcache restore: re-derive from the current clock.
   useEffect(() => {
-    void refresh();
-    const onVisible = () => document.visibilityState === 'visible' && void refresh();
-    const onOnline = () => void refresh();
+    const onVisible = () => document.visibilityState === 'visible' && tick();
     document.addEventListener('visibilitychange', onVisible);
-    window.addEventListener('online', onOnline);
-    window.addEventListener('pageshow', onOnline);
+    window.addEventListener('focus', tick);
+    window.addEventListener('pageshow', tick);
     return () => {
       document.removeEventListener('visibilitychange', onVisible);
-      window.removeEventListener('online', onOnline);
-      window.removeEventListener('pageshow', onOnline);
+      window.removeEventListener('focus', tick);
+      window.removeEventListener('pageshow', tick);
     };
-  }, [refresh]);
+  }, [tick]);
 
-  // Revalidate shortly after the next server-side transition (Zurich midnight).
-  const next = status.kind === 'ready' ? status.overview.nextTransitionAt : null;
-  const offset = status.kind === 'ready' ? status.offset : 0;
+  // Dev panel changed the simulated date or progress (dev builds only).
   useEffect(() => {
-    if (!next) return;
-    const delay = new Date(next).getTime() - (Date.now() + offset) + 1500;
-    // Long timers are clamped by browsers; re-check at most every 6 hours.
-    const timer = window.setTimeout(() => void refresh(), Math.max(1000, Math.min(delay, 6 * 3_600_000)));
+    if (!import.meta.env.DEV) return;
+    const onDevChange = () => {
+      setProgress(store.read());
+      tick();
+    };
+    window.addEventListener(DEV_CHANGE_EVENT, onDevChange);
+    return () => window.removeEventListener(DEV_CHANGE_EVENT, onDevChange);
+  }, [store, tick]);
+
+  const today = useMemo(() => zurichLocalDate(now), [now]);
+  const todayIso = toIsoDate(today);
+  const policyCalendar = useMemo(() => ({ year: CALENDAR.year, policy: 'STRICT_DATE' as const }), []);
+
+  const openedDays = useMemo(() => new Set(Object.keys(progress.opened).map(Number)), [progress.opened]);
+  const dayOpenedToday = useMemo(() => {
+    for (const [day, record] of Object.entries(progress.opened)) {
+      if (record.date === todayIso) return Number(day);
+    }
+    return null;
+  }, [progress.opened, todayIso]);
+
+  const overview = useMemo<Overview>(() => {
+    const doors: DoorSummary[] = ALL_DOOR_DAYS.map((day) => {
+      const state = deriveDoorState({ calendar: policyCalendar, day, today, openedDays, dayOpenedToday });
+      const record = progress.opened[String(day)];
+      return state === 'opened' && record
+        ? { day, state, openedAt: record.openedAt, title: CALENDAR.doors.find((d) => d.day === day)?.title }
+        : { day, state };
+    });
+    return {
+      calendar: { id: CALENDAR.calendarId, year: CALENDAR.year, settings: CALENDAR.settings },
+      today,
+      phase: calendarPhase(policyCalendar, today),
+      todayDoor: doorDayForDate(policyCalendar, today),
+      startsAt: calendarStartsAt(policyCalendar),
+      nextTransitionAt: nextTransitionAt(policyCalendar, now),
+      doors,
+      progress: { opened: doors.filter((d) => d.state === 'opened').length, total: doors.length },
+    };
+  }, [policyCalendar, today, now, openedDays, dayOpenedToday, progress.opened]);
+
+  // Wake up just after the next Zurich midnight. Browsers clamp/throttle long
+  // timers, so cap the delay and simply re-arm; reaching the target re-derives
+  // door states (it never unlocks anything by itself).
+  useEffect(() => {
+    const target = overview.nextTransitionAt;
+    if (!target) return;
+    const delay = target.getTime() - currentInstant().getTime() + 1500;
+    const timer = window.setTimeout(tick, Math.max(1000, Math.min(delay, MAX_TIMER_MS)));
     return () => window.clearTimeout(timer);
-  }, [next, offset, refresh]);
+  }, [overview.nextTransitionAt, tick]);
 
-  const signOut = useCallback(() => setStatus({ kind: 'signed-out' }), []);
-  const expire = useCallback(() => setStatus({ kind: 'signed-out', reason: 'expired' }), []);
-  const update = useCallback((fn: (o: CalendarOverview) => CalendarOverview) => {
-    setStatus((s) => (s.kind === 'ready' ? { ...s, overview: fn(s.overview) } : s));
-  }, []);
+  const applyMutation = useCallback(
+    (fn: (latest: Progress) => Progress) => {
+      const result = store.mutate(fn);
+      setProgress(result.progress);
+      if (!result.saved) setStorageWarning(true);
+      return result;
+    },
+    [store],
+  );
 
-  return { status, refresh, signOut, expire, update };
+  /** First opening of a door; records local progress when the policy allows it. */
+  const openDoor = useCallback(
+    (day: number): OpenOutcome => {
+      const instant = currentInstant();
+      const date = zurichLocalDate(instant);
+      const latest = store.read();
+      if (latest.opened[String(day)]) {
+        return { ok: true, openedAt: latest.opened[String(day)]!.openedAt, firstOpen: false };
+      }
+      const openedToday =
+        Object.entries(latest.opened).find(([, record]) => record.date === toIsoDate(date))?.[0] ?? null;
+      const decision = evaluateFirstOpening({
+        calendar: policyCalendar,
+        day,
+        today: date,
+        dayAlreadyOpenedToday: openedToday === null ? null : Number(openedToday),
+      });
+      if (!decision.allowed) {
+        tick(); // date may have rolled over since the last render
+        return { ok: false, reason: decision.reason };
+      }
+      const openedAt = instant.toISOString();
+      applyMutation((latest2) => ({
+        ...latest2,
+        opened: { ...latest2.opened, [String(day)]: { openedAt, date: toIsoDate(date) } },
+      }));
+      tick();
+      return { ok: true, openedAt, firstOpen: true };
+    },
+    [store, policyCalendar, applyMutation, tick],
+  );
+
+  /** Game progress updates (checkpoint, completion, failures). */
+  const updateGame = useCallback(
+    (fn: (game: GameState) => GameState) => applyMutation((latest) => ({ ...latest, game: fn(latest.game) })),
+    [applyMutation],
+  );
+
+  const updatePrefs = useCallback(
+    (fn: (prefs: Prefs) => Prefs) => applyMutation((latest) => ({ ...latest, prefs: fn(latest.prefs) })),
+    [applyMutation],
+  );
+
+  return {
+    overview,
+    game: progress.game,
+    prefs: progress.prefs,
+    storageWarning,
+    openDoor,
+    updateGame,
+    updatePrefs,
+    refresh: tick,
+  };
 }

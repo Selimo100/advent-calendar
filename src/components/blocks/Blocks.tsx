@@ -1,13 +1,13 @@
 import { useState, type ReactNode } from 'react';
-import type { DeliveredBlock } from '../../../shared/content/schema.ts';
-import { isPlaceholder } from '../../../shared/content/placeholders.ts';
-import { parseSpotifyUrl, spotifyEmbedUrl, type SpotifyKind } from '../../../shared/content/spotify.ts';
+import type { Block as ContentBlock } from '../../content/schema.ts';
+import { isPlaceholder } from '../../content/placeholders.ts';
+import { parseSpotifyUrl, spotifyEmbedUrl, type SpotifyKind } from '../../content/spotify.ts';
 import { isoToGerman } from '../../lib/format.ts';
 import { CalendarIcon, ExternalIcon, MapPinIcon, MicIcon, MusicIcon, StarIcon } from '../icons.tsx';
-import { ProtectedAudio, ProtectedImage } from './Media.tsx';
+import { StaticAudio, StaticImage } from './Media.tsx';
 import { Inline, Paragraphs } from './Text.tsx';
 
-type Block<T extends DeliveredBlock['type']> = Extract<DeliveredBlock, { type: T }>;
+type Block<T extends ContentBlock['type']> = Extract<ContentBlock, { type: T }>;
 
 function Kicker({ children, icon }: { children: ReactNode; icon?: ReactNode }) {
   return (
@@ -44,7 +44,7 @@ function MemoryBlock({ block }: { block: Block<'memory'> }) {
       {block.title && <SectionTitle>{block.title}</SectionTitle>}
       <div className={`grid gap-4 ${block.photos.length > 1 ? 'sm:grid-cols-2' : ''}`}>
         {block.photos.map((photo, i) => (
-          <ProtectedImage key={photo.mediaId} photo={photo} className={i % 2 ? 'rotate-[1.2deg]' : '-rotate-[1deg]'} />
+          <StaticImage key={photo.src} photo={photo} className={i % 2 ? 'rotate-[1.2deg]' : '-rotate-[1deg]'} />
         ))}
       </div>
       {(date || block.location) && (
@@ -132,7 +132,7 @@ function SongBlock({ block }: { block: Block<'song'> }) {
       <Kicker icon={<MusicIcon className="h-4 w-4" />}>Ein Lied</Kicker>
       <div className="flex items-center gap-4 rounded-2xl bg-midnight p-3 text-ivory shadow-lg">
         <div className="h-20 w-20 shrink-0 overflow-hidden rounded-lg sm:h-24 sm:w-24">
-          {block.artwork ? <ProtectedImage photo={block.artwork} framed={false} /> : <Vinyl />}
+          {block.artwork ? <StaticImage photo={block.artwork} framed={false} /> : <Vinyl />}
         </div>
         <div className="min-w-0">
           <p className="font-serif-display text-[1.3rem] leading-tight font-semibold break-words">{block.trackTitle}</p>
@@ -207,7 +207,7 @@ function VoiceBlock({ block }: { block: Block<'voice'> }) {
       <SectionTitle>{title}</SectionTitle>
       {block.intro && <Paragraphs items={block.intro} className="mb-4 text-[1.05rem]" />}
       <div className="rounded-2xl bg-evergreen/10 p-4">
-        <ProtectedAudio audio={block.audio} label={title} />
+        <StaticAudio audio={block.audio} label={title} />
         {block.durationLabel && <p className="mt-2 text-sm text-ink-soft">Dauer: {block.durationLabel}</p>}
       </div>
       {block.transcript && (
@@ -273,7 +273,7 @@ function FinalLetterBlock({ block }: { block: Block<'finalLetter'> }) {
       </div>
       <h3 className="font-serif-display mb-4 text-center text-[1.8rem] leading-tight font-semibold text-ink">{block.title}</h3>
       <Paragraphs items={block.paragraphs} />
-      {block.photo && <ProtectedImage photo={block.photo} className="mx-auto mt-6 max-w-md -rotate-[0.8deg]" />}
+      {block.photo && <StaticImage photo={block.photo} className="mx-auto mt-6 max-w-md -rotate-[0.8deg]" />}
       {block.finalSurprise &&
         (revealed ? (
           <div className="mt-6 rounded-2xl bg-burgundy p-5 text-ivory" tabIndex={-1} ref={(el) => el?.focus()}>
@@ -301,7 +301,7 @@ function FinalLetterBlock({ block }: { block: Block<'finalLetter'> }) {
   );
 }
 
-export function BlockView({ block }: { block: DeliveredBlock }) {
+export function BlockView({ block }: { block: ContentBlock }) {
   switch (block.type) {
     case 'letter':
       return <LetterBlock block={block} />;

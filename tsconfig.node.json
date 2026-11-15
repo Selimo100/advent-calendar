@@ -3,7 +3,7 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "types": ["node"]
+    "types": ["node", "vite/client"]
   },
-  "include": ["server", "shared", "netlify", "tools", "scripts", "tests", "content", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
+  "include": ["scripts", "tests", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { addDays, formatGermanDate, parseIsoDate, toIsoDate, zurichLocalDate, zurichStartOfDay } from '../../shared/calendar/time.ts';
+import { addDays, formatGermanDate, parseIsoDate, toIsoDate, zurichLocalDate, zurichStartOfDay } from '../../src/lib/time.ts';
 
 describe('Europe/Zurich calendar dates', () => {
   it('uses the Zurich date when UTC is still on the previous day', () => {

@@ -2,6 +2,12 @@ import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 5199;
 
+/**
+ * The end-to-end tests run against the real production build served by
+ * `vite preview` — no backend, no dev tooling. Run `npm run build` first.
+ * Dates are controlled with Playwright's clock API, which is exactly the
+ * device clock the static site relies on.
+ */
 export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: false,
@@ -10,17 +16,31 @@ export default defineConfig({
   reporter: [['list']],
   use: { baseURL: `http://localhost:${PORT}`, trace: 'retain-on-failure' },
   projects: [
-    { name: 'mobile-webkit', use: { ...devices['iPhone 13'] }, testIgnore: /screenshots|production/ },
-    { name: 'mobile-chromium', use: { ...devices['Pixel 7'] }, testIgnore: /screenshots|production/ },
-    { name: 'production-build', use: { ...devices['Desktop Chrome'] }, testMatch: /production/ },
-    { name: 'screenshots', use: { ...devices['Desktop Chrome'] }, testMatch: /screenshots/ },
+    {
+      name: 'mobile-chromium',
+      use: { ...devices['Pixel 7'] },
+      testIgnore: /production-build|layout/,
+    },
+    {
+      name: 'mobile-webkit',
+      use: { ...devices['iPhone 13'] },
+      testIgnore: /production-build|layout/,
+    },
+    {
+      name: 'production-build',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /production-build/,
+    },
+    {
+      name: 'layout',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /layout/,
+    },
   ],
   webServer: {
-    // Fresh demo database for every run; fictional content only.
-    command: `rm -rf .demo-data/e2e && vite --port ${PORT} --strictPort`,
+    command: `npx vite preview --port ${PORT} --strictPort`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: false,
-    env: { DEMO_DATA_DIR: '.demo-data/e2e', DEMO_INITIAL_TIME: '2026-12-05T08:00:00Z' },
     timeout: 120_000,
   },
 });

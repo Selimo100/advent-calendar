@@ -1,4 +1,4 @@
-import { decemberDate, formatGermanDate, parseIsoDate, zurichLocalDate } from '../../shared/calendar/time.ts';
+import { decemberDate, formatGermanDate, parseIsoDate, zurichLocalDate } from './time.ts';
 
 export const doorDateLabel = (year: number, day: number) => formatGermanDate(decemberDate(year, day));
 

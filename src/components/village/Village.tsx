@@ -1,4 +1,4 @@
-import type { DoorSummary } from '../../../shared/api.ts';
+import type { DoorSummary } from '../../lib/useCalendar.ts';
 import { TreeGroveArt } from './HouseArt.tsx';
 import { House } from './House.tsx';
 import { GRAND_DOOR, VILLAGE_ORDER } from './houses.ts';
@@ -7,14 +7,12 @@ export interface VillageProps {
   year: number;
   doors: DoorSummary[];
   todayDoor: number | null;
-  pendingDay: number | null;
   celebrateDay: number | null;
-  offline: boolean;
   registerDoor: (day: number, el: HTMLButtonElement | null) => void;
   onActivate: (day: number) => void;
 }
 
-export function Village({ year, doors, todayDoor, pendingDay, celebrateDay, offline, registerDoor, onActivate }: VillageProps) {
+export function Village({ year, doors, todayDoor, celebrateDay, registerDoor, onActivate }: VillageProps) {
   const byDay = new Map(doors.map((d) => [d.day, d]));
   const render = (day: number) => {
     const door = byDay.get(day) ?? { day, state: 'locked' as const };
@@ -25,7 +23,6 @@ export function Village({ year, doors, todayDoor, pendingDay, celebrateDay, offl
         year={year}
         state={door.state}
         title={door.title}
-        pending={pendingDay === day}
         isToday={todayDoor === day}
         celebrate={celebrateDay === day}
         onActivate={onActivate}
@@ -34,7 +31,7 @@ export function Village({ year, doors, todayDoor, pendingDay, celebrateDay, offl
   };
 
   return (
-    <ul className="village" aria-label="Das Adventsdorf mit 24 Türchen" data-offline={offline || undefined}>
+    <ul className="village" aria-label="Das Adventsdorf mit 24 Türchen">
       {VILLAGE_ORDER.map((day) => (
         <li key={day}>{render(day)}</li>
       ))}

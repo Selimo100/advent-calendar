@@ -1,6 +1,6 @@
-# Netlify configuration. Secrets are NOT configured here; set them in the
-# Netlify UI (Site configuration → Environment variables) with scope
-# "Functions" and per deploy context. See docs/DEPLOYMENT.md.
+# Netlify configuration for a fully static deployment.
+# No functions, no environment variables, no backend of any kind:
+# `npm run build` produces dist/, Netlify serves it as plain files.
 
 [build]
   command = "npm run build"
@@ -9,30 +9,25 @@
 [build.environment]
   NODE_VERSION = "22"
 
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-
-# Local `netlify dev`: Vite serves the frontend, the real function serves /api/*.
-[dev]
-  framework = "#custom"
-  command = "vite --port 5173 --strictPort"
-  targetPort = 5173
-  port = 8888
+# No SPA fallback: the app is a single page (index.html). Missing media or
+# JSON paths should return a real 404 instead of silently serving the app.
 
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://*.supabase.co; media-src 'self' https://*.supabase.co; font-src 'self'; connect-src 'self'; frame-src https://open.spotify.com; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    # 'unsafe-inline' for styles is needed for React style attributes
+    # (door positioning, sparkles) and canvas sizing. Scripts stay 'self'.
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self'; frame-src https://open.spotify.com; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
     Strict-Transport-Security = "max-age=31536000"
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "DENY"
     Referrer-Policy = "no-referrer"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+    # Ask search engines to stay away. This is politeness, not access control:
+    # anyone with the URL can open the site and download its media.
     X-Robots-Tag = "noindex, nofollow"
 
-# The HTML shell is public and contains no personal content, but it should
-# always be revalidated so that new deploys are picked up immediately.
+# The HTML shell should always be revalidated so new deploys appear immediately.
 [[headers]]
   for = "/index.html"
   [headers.values]
@@ -42,3 +37,10 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Photos and audio: cacheable but revalidated, so replacing a file under the
+# same name is picked up within a day.
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

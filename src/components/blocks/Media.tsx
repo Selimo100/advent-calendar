@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import type { DeliveredAudio, DeliveredPhoto } from '../../../shared/content/schema.ts';
+import type { Audio, Photo } from '../../content/schema.ts';
 import { Inline } from './Text.tsx';
 
 /**
- * Protected image. `src` points to /api/media/<id>, which checks the session
- * and the opening, then redirects to a short-lived signed URL. On failure (for
- * example an expired link), "Erneut laden" requests a fresh URL.
+ * Photo from public/media/photos/. Static file; a failed load (offline,
+ * renamed file) offers a retry instead of a broken image.
  */
-export function ProtectedImage({ photo, className = '', framed = true }: { photo: DeliveredPhoto; className?: string; framed?: boolean }) {
+export function StaticImage({ photo, className = '', framed = true }: { photo: Photo; className?: string; framed?: boolean }) {
   const [attempt, setAttempt] = useState(0);
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const src = attempt ? `${photo.src}?retry=${attempt}` : photo.src;
+  const ratio = photo.width && photo.height ? `${photo.width} / ${photo.height}` : undefined;
 
   return (
     <figure className={`${framed ? 'polaroid' : ''} ${className}`}>
-      <div className="relative overflow-hidden bg-[#e9dfcf]" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
+      <div className={`relative overflow-hidden bg-[#e9dfcf] ${ratio ? '' : 'min-h-24'}`} style={ratio ? { aspectRatio: ratio } : undefined}>
         {!failed ? (
           <img
             key={src}
@@ -27,10 +27,14 @@ export function ProtectedImage({ photo, className = '', framed = true }: { photo
             decoding="async"
             onLoad={() => setLoaded(true)}
             onError={() => setFailed(true)}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+            className={
+              ratio
+                ? `absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`
+                : 'block h-auto w-full'
+            }
           />
         ) : (
-          <div className="absolute inset-0 grid place-items-center p-4 text-center text-sm text-ink-soft">
+          <div className="grid min-h-24 place-items-center p-4 text-center text-sm text-ink-soft">
             <div>
               <p>Das Bild konnte gerade nicht geladen werden.</p>
               <button
@@ -57,15 +61,30 @@ export function ProtectedImage({ photo, className = '', framed = true }: { photo
   );
 }
 
+const AUDIO_TYPES: Record<string, string> = {
+  mp3: 'audio/mpeg',
+  m4a: 'audio/mp4',
+  aac: 'audio/aac',
+  wav: 'audio/wav',
+  ogg: 'audio/ogg',
+  opus: 'audio/ogg',
+  webm: 'audio/webm',
+};
+
+function audioMimeType(src: string): string | undefined {
+  const extension = /\.([a-z0-9]+)$/i.exec(src)?.[1]?.toLowerCase();
+  return extension ? AUDIO_TYPES[extension] : undefined;
+}
+
 /** Voice message: explicit controls only, never autoplay, nothing preloaded. */
-export function ProtectedAudio({ audio, label }: { audio: DeliveredAudio; label: string }) {
+export function StaticAudio({ audio, label }: { audio: Audio; label: string }) {
   const [attempt, setAttempt] = useState(0);
   const [failed, setFailed] = useState(false);
   const src = attempt ? `${audio.src}?retry=${attempt}` : audio.src;
   return (
     <div>
       <audio key={src} controls preload="none" className="w-full" aria-label={label} onError={() => setFailed(true)}>
-        <source src={src} type={audio.mimeType} />
+        <source src={src} type={audioMimeType(audio.src)} />
       </audio>
       {failed && (
         <p className="mt-2 text-sm text-ink-soft" role="status">

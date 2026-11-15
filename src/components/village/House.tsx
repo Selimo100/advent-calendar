@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useState } from 'react';
-import type { DoorState } from '../../../shared/api.ts';
-import { HourglassIcon, LockIcon, SnowflakeIcon } from '../icons.tsx';
+import type { DoorState } from '../../lib/useCalendar.ts';
+import { LockIcon, SnowflakeIcon } from '../icons.tsx';
 import { doorDateLabel } from '../../lib/format.ts';
 import { GrandHouseArt, HouseArt } from './HouseArt.tsx';
 import { GRAND_DOOR_RECT, HOUSE_DOOR, houseDesign } from './houses.ts';
@@ -10,20 +10,16 @@ export interface HouseProps {
   year: number;
   state: DoorState;
   title?: string;
-  pending: boolean;
   isToday: boolean;
   celebrate: boolean;
   onActivate: (day: number) => void;
 }
 
-function accessibleLabel({ day, year, state, title, pending }: HouseProps): string {
+function accessibleLabel({ day, year, state, title }: HouseProps): string {
   const base = `Türchen ${day}`;
-  if (pending) return `${base}, wird geöffnet …`;
   switch (state) {
     case 'available':
       return `${base}, heute: jetzt öffnen`;
-    case 'not_ready':
-      return `${base}, heute: wird noch vorbereitet`;
     case 'opened':
       return `${base}, geöffnet${title ? `: ${title}` : ''}`;
     case 'missed':
@@ -41,7 +37,7 @@ const SPARKLES = Array.from({ length: 10 }, (_, i) => {
 });
 
 export const House = forwardRef<HTMLButtonElement, HouseProps>(function House(props, ref) {
-  const { day, state, pending, isToday, celebrate, onActivate } = props;
+  const { day, state, isToday, celebrate, onActivate } = props;
   const grand = day === 24;
   const design = houseDesign(day);
   const door = grand ? GRAND_DOOR_RECT : HOUSE_DOOR;
@@ -61,15 +57,13 @@ export const House = forwardRef<HTMLButtonElement, HouseProps>(function House(pr
       className="house"
       data-day={day}
       data-state={state}
-      data-pending={pending || undefined}
-      aria-busy={pending || undefined}
       aria-label={accessibleLabel(props)}
       onClick={() => onActivate(day)}
     >
       <div className="house-art" style={grand ? { maxWidth: 360, margin: '0 auto' } : undefined}>
         {grand ? <GrandHouseArt /> : <HouseArt design={design} />}
         <div className="door-frame" style={door}>
-          {(state === 'available' || state === 'not_ready') && !pending && <span className="door-glow-pulse" />}
+          {state === 'available' && <span className="door-glow-pulse" />}
           <div className="door-light">
             <span className="door-light-number">{day}</span>
           </div>
@@ -77,13 +71,6 @@ export const House = forwardRef<HTMLButtonElement, HouseProps>(function House(pr
             <span className="door-number">{day}</span>
             <span className="door-knob" />
           </div>
-          {pending && (
-            <span className="pending-dots" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </span>
-          )}
           {state === 'locked' && (
             <span className="door-badge">
               <LockIcon />
@@ -94,11 +81,6 @@ export const House = forwardRef<HTMLButtonElement, HouseProps>(function House(pr
               <SnowflakeIcon />
             </span>
           )}
-          {state === 'not_ready' && (
-            <span className="door-badge">
-              <HourglassIcon />
-            </span>
-          )}
           {showSparkles && (
             <span className="sparkles" aria-hidden="true">
               {SPARKLES.map((s, i) => (
@@ -107,7 +89,7 @@ export const House = forwardRef<HTMLButtonElement, HouseProps>(function House(pr
             </span>
           )}
         </div>
-        {isToday && (state === 'available' || state === 'not_ready') && (
+        {isToday && state === 'available' && (
           <span className="today-tag" aria-hidden="true" style={grand ? { top: '48%' } : undefined}>
             Heute
           </span>

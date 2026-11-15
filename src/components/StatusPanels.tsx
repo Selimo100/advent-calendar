@@ -1,45 +1,43 @@
 import { useEffect, useState } from 'react';
-import type { CalendarOverview } from '../../shared/api.ts';
-import { parseIsoDate, formatGermanDate } from '../../shared/calendar/time.ts';
-import { dayLabel, formatDuration, instantToGerman } from '../lib/format.ts';
+import { currentInstant } from '../lib/clock.ts';
+import { formatGermanDate, zurichLocalDate } from '../lib/time.ts';
+import { dayLabel, formatDuration } from '../lib/format.ts';
+import type { Overview } from '../lib/useCalendar.ts';
 import { StarIcon } from './icons.tsx';
 
-/** Server-time-based "now" for display only. */
-function useServerNow(offset: number, intervalMs: number): number {
-  const [now, setNow] = useState(() => Date.now() + offset);
+/** Ticking "now" for countdown display only; it never unlocks anything. */
+function useNow(intervalMs: number): number {
+  const [now, setNow] = useState(() => currentInstant().getTime());
   useEffect(() => {
-    setNow(Date.now() + offset);
-    const t = window.setInterval(() => setNow(Date.now() + offset), intervalMs);
+    setNow(currentInstant().getTime());
+    const t = window.setInterval(() => setNow(currentInstant().getTime()), intervalMs);
     return () => window.clearInterval(t);
-  }, [offset, intervalMs]);
+  }, [intervalMs]);
   return now;
 }
 
 export function TodayStatus({
   overview,
-  offset,
   onGoToToday,
-  onRevalidate,
+  onReachedMidnight,
 }: {
-  overview: CalendarOverview;
-  offset: number;
+  overview: Overview;
   onGoToToday: () => void;
-  onRevalidate: () => void;
+  onReachedMidnight: () => void;
 }) {
-  const now = useServerNow(offset, 1000);
-  const todayDate = parseIsoDate(overview.today)!;
-  const todayLabel = formatGermanDate(todayDate);
+  const now = useNow(1000);
+  const todayLabel = formatGermanDate(overview.today);
   const target = overview.phase === 'before' ? overview.startsAt : overview.nextTransitionAt;
-  const remaining = target ? new Date(target).getTime() - now : null;
+  const remaining = target ? target.getTime() - now : null;
 
-  // Reaching zero only asks the server again; it never unlocks anything locally.
+  // Reaching zero re-derives the door states from the clock.
   const reachedZero = remaining !== null && remaining <= 0;
   useEffect(() => {
     if (reachedZero) {
-      const t = window.setTimeout(onRevalidate, 1200);
+      const t = window.setTimeout(onReachedMidnight, 1200);
       return () => window.clearTimeout(t);
     }
-  }, [reachedZero, onRevalidate]);
+  }, [reachedZero, onReachedMidnight]);
 
   const todayDoor = overview.todayDoor ? overview.doors.find((d) => d.day === overview.todayDoor) : undefined;
   const opened = overview.progress.opened;
@@ -47,8 +45,11 @@ export function TodayStatus({
   let headline: string;
   let detail: string | null = null;
   if (overview.phase === 'before') {
-    headline = `Der Kalender beginnt am ${instantToGerman(overview.startsAt)}.`;
-    detail = remaining !== null && remaining > 0 ? `Noch ${formatDuration(remaining).replace(/\.$/, '')}. Bis dahin bleiben alle Türchen verschlossen.` : 'Gleich geht es los …';
+    headline = `Der Kalender beginnt am ${formatGermanDate(zurichLocalDate(overview.startsAt))}.`;
+    detail =
+      remaining !== null && remaining > 0
+        ? `Noch ${formatDuration(remaining).replace(/\.$/, '')}. Bis dahin bleiben alle Türchen verschlossen.`
+        : 'Gleich geht es los …';
   } else if (overview.phase === 'after') {
     headline = overview.calendar.settings.closingMessage;
     detail =
@@ -59,9 +60,6 @@ export function TodayStatus({
           : `${opened} geöffnete Türchen sind hier für dich aufbewahrt.`;
   } else if (todayDoor?.state === 'available') {
     headline = `Türchen ${todayDoor.day} wartet auf dich.`;
-  } else if (todayDoor?.state === 'not_ready') {
-    headline = `Türchen ${todayDoor.day} wird gerade noch liebevoll vorbereitet.`;
-    detail = 'Schau etwas später noch einmal vorbei.';
   } else if (todayDoor?.state === 'opened') {
     headline = `Heute hast du Türchen ${todayDoor.day} geöffnet.`;
     detail =
@@ -95,7 +93,7 @@ export function TodayStatus({
   );
 }
 
-export function Progress({ overview }: { overview: CalendarOverview }) {
+export function Progress({ overview }: { overview: Overview }) {
   const { opened, total } = overview.progress;
   return (
     <section aria-label="Fortschritt" className="mt-8">
@@ -118,7 +116,7 @@ export function Progress({ overview }: { overview: CalendarOverview }) {
   );
 }
 
-export function Memories({ overview, onOpen }: { overview: CalendarOverview; onOpen: (day: number) => void }) {
+export function Memories({ overview, onOpen }: { overview: Overview; onOpen: (day: number) => void }) {
   const opened = overview.doors.filter((d) => d.state === 'opened').sort((a, b) => a.day - b.day);
   return (
     <section aria-labelledby="memories-heading" className="mt-10">

@@ -1,18 +1,78 @@
-import { expect, type APIRequestContext, type Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
-export const DEMO_PASSPHRASE = 'lebkuchen-im-schnee';
+/** Must match src/content/calendar.ts. */
+export const CALENDAR_ID = 'advent-2026';
+export const YEAR = 2026;
+/** Production storage key (dev builds use the `advent:dev:` namespace). */
+export const PROGRESS_KEY = `advent:v1:progress:${CALENDAR_ID}:${YEAR}`;
 
-export async function demoState(request: APIRequestContext, opts: { at: string; openedDays: number[] }) {
-  await request.post('/api/demo/latency', { data: { ms: 0 } });
-  await request.post('/api/demo/clock', { data: { at: opts.at } });
-  await request.post('/api/demo/history', { data: { openedDays: opts.openedDays } });
+export interface SeedProgress {
+  opened?: number[];
+  game?: {
+    started?: boolean;
+    checkpoint?: { id: string; rank: number } | null;
+    completed?: boolean;
+  };
+  prefs?: { assist?: boolean; sound?: boolean };
 }
 
-export async function login(page: Page) {
+function progressValue(seed: SeedProgress) {
+  const opened: Record<string, { openedAt: string; date: string }> = {};
+  for (const day of seed.opened ?? []) {
+    const date = `${YEAR}-12-${String(day).padStart(2, '0')}`;
+    opened[String(day)] = { openedAt: `${date}T08:00:00.000Z`, date };
+  }
+  return {
+    version: 1,
+    opened,
+    game: {
+      started: seed.game?.started ?? false,
+      checkpoint: seed.game?.checkpoint ?? null,
+      completed: seed.game?.completed ?? false,
+      completedAt: seed.game?.completed ? `${YEAR}-12-06T10:00:00.000Z` : null,
+      failures: 0,
+    },
+    prefs: { assist: seed.prefs?.assist ?? false, sound: seed.prefs?.sound ?? false },
+  };
+}
+
+/** An instant in Europe/Zurich (December is UTC+1). */
+export function zurichInstant(year: number, month: number, day: number, hour = 9, minute = 0): Date {
+  const offset = month >= 4 && month <= 9 ? '+02:00' : '+01:00';
+  const pad = (value: number) => String(value).padStart(2, '0');
+  return new Date(`${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(minute)}:00${offset}`);
+}
+
+/** Sets the device clock and seeds local progress, before any script runs. */
+export async function visit(page: Page, options: { at: Date; progress?: SeedProgress } = { at: zurichInstant(YEAR, 12, 5) }) {
+  await page.clock.install({ time: options.at });
+  const key = PROGRESS_KEY;
+  if (options.progress) {
+    const value = JSON.stringify(progressValue(options.progress));
+    await page.addInitScript(
+      ([storageKey, storageValue]) => {
+        window.localStorage.setItem(storageKey as string, storageValue as string);
+      },
+      [key, value],
+    );
+  } else {
+    await page.addInitScript(
+      ([storageKey]) => {
+        window.localStorage.removeItem(storageKey as string);
+      },
+      [key],
+    );
+  }
   await page.goto('/');
-  await page.getByLabel('Zugangscode', { exact: true }).fill(DEMO_PASSPHRASE);
-  await page.getByRole('button', { name: 'Unseren Kalender öffnen' }).click();
-  await expect(page.getByRole('list', { name: /Adventsdorf/ })).toBeVisible();
 }
 
-export const door = (page: Page, day: number) => page.locator(`button.house[data-day="${day}"]`);
+export function door(page: Page, day: number) {
+  return page.locator(`button.house[data-day="${day}"]`);
+}
+
+export async function readProgress(page: Page) {
+  return page.evaluate((key) => {
+    const raw = window.localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as Record<string, unknown>) : null;
+  }, PROGRESS_KEY);
+}

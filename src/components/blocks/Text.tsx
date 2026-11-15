@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { parseInline } from '../../../shared/content/inlineText.ts';
+import { parseInline } from '../../content/inlineText.ts';
 
 /** Renders content text as React text nodes only (no HTML is ever interpreted). */
 export function Inline({ text }: { text: string }) {
