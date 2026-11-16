@@ -340,7 +340,7 @@ export default defineCalendar({
         {
           type: "letter",
           paragraphs: ["Also ich probier mich churz z'hebe, wird schwierig but I'll try.",
-            "Früehner han ich nie a TeenageLove glaubt, han dir das glaub scho öfters gseit. Aber sit du i mis Lebe trette bisch het sich mini Meinig um 180 grad gkehrt. Ich will gar nüt da sege. Egal was in Zuekunft cho wird, weiss ich dass ich jedi Sekunde gnüsse wird. Mer weiss nähmlich nie wenn es die letzti isch. Leider han ich das das Jahr au wieder uf die herti Tour müsse lerne. Deswege jedi Sekunde, jede Hunderstel gnüsse und s'Beste drus mache. Us jedere Situation."
+            "Früehner han ich nie a Teenag eLove glaubt, han dir das glaub scho öfters gseit. Han nie verstande, wie Lüüt so sicher sii chönd.Aber sit du i mis Lebe trette bisch het sich mini Meinig um 180 grad gkehrt. Ich will gar nüt da sege. Egal was in Zuekunft cho wird, weiss ich dass ich jedi Sekunde gnüsse wird. Mer weiss nähmlich nie wenn es die letzti isch. Leider han ich das das Jahr au wieder uf die herti Tour müsse lerne. Deswege jedi Sekunde, jede Hunderstel gnüsse und s'Beste drus mache. Us jedere Situation."
           ],
           signature: "Selina <3",
         },
@@ -385,18 +385,18 @@ export default defineCalendar({
     },
     {
       day: 21,
-      title: "Worauf ich mich freue",
+      title: "Uf was ich mich freue",
       blocks: [
         {
           type: "reasons",
-          title: "Dinge, auf die ich mich mit dir freue",
-          reasons: ["[THING 1]", "[THING 2]", "[THING 3]", "[THING 4]"],
+          title: "Sache, uf die ich mich mit dir freue",
+          reasons: ["Gmeinsami Ferie", "Öfters i dine Ärm chöne ufwache", "Euse Neujahreskuss", "Gmeinsami Errinerige sammle"],
         },
         {
           type: "voucher",
-          title: "Ein Spaziergang mit heisser Schokolade.",
+          title: "En Abigsspaziergang",
           description:
-            "Wann immer du Lust hast. Die Schokolade bringe ich mit.",
+            "Wenn du willsch, Lust und Ziit hesch.",
         },
       ],
     },
@@ -424,35 +424,35 @@ export default defineCalendar({
     },
     {
       day: 23,
-      title: "Morgen ist es so weit",
+      title: "Morn isch es so wiit",
       blocks: [
         {
           type: "letter",
           paragraphs: [
-            "Nur noch einmal schlafen. Das letzte Türchen ist das grösste im Dorf.",
-            "[YOUR ANTICIPATION NOTE]",
+            "Nur no einmal schlafe. S letzte Tüürli isch s grösse im ganze Dörfli.",
+            "Ich will dich gar nöd spoilere, aber ich bin mir sicher, dass du dich sehr freue würsch. Ich bin nöd würklich en Materielle Mensch, ich glaub das hesch mitlerwille au scho mitbecho hihi. Aber es isch öppis vo ganzem Herze...",
           ],
         },
       ],
     },
     {
       day: 24,
-      title: "Das letzte Türchen",
+      title: "S'letzte Tüürli",
       blocks: [
         {
           type: "finalLetter",
           title: "Liebi Joya",
           paragraphs: [
-            "[YOUR FINAL LETTER] Hier ist Platz für einen längeren Brief.",
-            "Danke für jeden Tag in diesem Dezember, an dem du ein Türchen geöffnet hast.",
-          ],
-          photo: {
+            "Ich hoff, dass du dich über die chlini Geste vo mir gfreut hesch und mindestens eis chlises Lächle im Gsicht gha hesch. Ich han mir Müeh geh, au wenns nöd viel gsie isch, isch es für mich au so schön gsie das allei z'vorbereite. Nomal genau durchdänke, was ich zum Bild oder zum Lied fühlt han und was ich dir dezue säge han wele. Es isch würklcih vo Herze cho <3",
+            "Danke für jede Tag im Dezember, wo du dir d'Ziit gnoh hesch die Tüürli z'öffne. Das isch nöd selbstverständlich.",
+            ],
+            photo: {
             src: "/media/photos/placeholder-stars.svg",
             alt: "[PRIVATE PHOTO] Beispielbild: ein Sternenhimmel über dem Dorf",
           },
           finalSurprise: {
-            title: "Und noch etwas",
-            paragraphs: ["[YOUR FINAL SURPRISE]"],
+            title: "Und no öppis",
+            paragraphs: ["Du derfsch jetzt s chline Gschänckli wo ich verpackt han ufmache. Ich han eifach probiert alles was ich zu dem Ziitpunk gfühlt gha han irgendwie ih Wort z'fasse i de Hoffnig, dass es irgendwenn mal e schöni Errinerig wird an Ahfang. Und tuet mer leid, dass es nüme so aktiv gschriebe worde isch, defür isch det würklich de ganzi Ahfang drin."],
           },
           signature: "Selina <3",
         },

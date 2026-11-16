@@ -128,20 +128,25 @@ function Vinyl() {
 }
 
 function SongBlock({ block }: { block: Block<'song'> }) {
+  // With a real Spotify track, the embed already shows title, artist and cover,
+  // so the custom card only appears as a fallback while the link is missing.
+  const hasTrack = !isPlaceholder(block.spotifyUrl) && parseSpotifyUrl(block.spotifyUrl, 'track') !== null;
   return (
     <section>
-      <Kicker icon={<MusicIcon className="h-4 w-4" />}>Ein Lied</Kicker>
-      <div className="flex items-center gap-4 rounded-2xl bg-midnight p-3 text-ivory shadow-lg">
-        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-lg sm:h-24 sm:w-24">
-          {block.artwork ? <StaticImage photo={block.artwork} framed={false} /> : <Vinyl />}
+      <Kicker icon={<MusicIcon className="h-4 w-4" />}>Es Lied</Kicker>
+      {!hasTrack && (
+        <div className="mb-4 flex items-center gap-4 rounded-2xl bg-midnight p-3 text-ivory shadow-lg">
+          <div className="h-20 w-20 shrink-0 overflow-hidden rounded-lg sm:h-24 sm:w-24">
+            {block.artwork ? <StaticImage photo={block.artwork} framed={false} /> : <Vinyl />}
+          </div>
+          <div className="min-w-0">
+            <p className="font-serif-display text-[1.3rem] leading-tight font-semibold break-words">{block.trackTitle}</p>
+            <p className="mt-0.5 text-ivory-dim">{block.artist}</p>
+          </div>
         </div>
-        <div className="min-w-0">
-          <p className="font-serif-display text-[1.3rem] leading-tight font-semibold break-words">{block.trackTitle}</p>
-          <p className="mt-0.5 text-ivory-dim">{block.artist}</p>
-        </div>
-      </div>
-      {block.intro && <Paragraphs items={block.intro} className="mt-4 text-[1.05rem]" />}
-      <div className="mt-4">
+      )}
+      {block.intro && <Paragraphs items={block.intro} className="mb-4 text-[1.05rem]" />}
+      <div>
         <SpotifyLink url={block.spotifyUrl} kind="track" label={`${block.trackTitle} von ${block.artist}`} />
       </div>
       <h3 className="font-serif-display mt-6 mb-2 text-[1.2rem] font-semibold text-burgundy">Warum mich dieses Lied an uns erinnert</h3>
