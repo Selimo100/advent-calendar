@@ -157,6 +157,21 @@ body {
   animation-play-state: paused;
 }
 
+/* Hidden dev-mode entry (5 taps). Invisible; `manipulation` stops quick taps
+   from zooming on iOS. */
+.dev-corner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: calc(env(safe-area-inset-left) + 48px);
+  height: calc(env(safe-area-inset-top) + 48px);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* -------------------------------------------------------------------------
  * Village
  * ---------------------------------------------------------------------- */

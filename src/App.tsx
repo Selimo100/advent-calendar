@@ -1,19 +1,12 @@
-import { lazy, Suspense } from 'react';
 import { CalendarPage } from './components/CalendarPage.tsx';
-
-// Development-only tooling. `import.meta.env.DEV` is false in production
-// builds, so this import (and the whole panel) is removed from the bundle.
-const DevPanel = import.meta.env.DEV ? lazy(() => import('./dev/DevPanel.tsx')) : null;
+import { DevGate } from './dev/DevGate.tsx';
 
 export function App() {
   return (
     <>
       <CalendarPage />
-      {DevPanel && (
-        <Suspense fallback={null}>
-          <DevPanel />
-        </Suspense>
-      )}
+      {/* Hidden dev mode: 5 taps top left + password (see src/lib/devMode.ts). */}
+      <DevGate />
     </>
   );
 }

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CalendarSettings } from '../content/schema.ts';
 import { CALENDAR } from './calendarData.ts';
 import {
+  calendarDateAt,
   calendarPhase,
   deriveDoorState,
   doorDayForDate,
@@ -15,7 +16,8 @@ import {
 } from './calendarPolicy.ts';
 import { createProgressStore, type GameState, type Prefs, type Progress } from './calendarStorage.ts';
 import { currentInstant, DEV_CHANGE_EVENT } from './clock.ts';
-import { toIsoDate, zurichLocalDate, type LocalDate } from './time.ts';
+import { isDevMode } from './devMode.ts';
+import { toIsoDate, type LocalDate } from './time.ts';
 
 export type DoorState = PolicyDoorState;
 
@@ -48,7 +50,7 @@ const MAX_TIMER_MS = 6 * 3_600_000;
 
 /**
  * Derives the whole calendar state locally: bundled content + localStorage
- * progress + the device clock (Europe/Zurich). Re-derives at Zurich midnight,
+ * progress + the device clock (Europe/Zurich). Re-derives at 00:01 Zurich time,
  * when the page becomes visible, on focus, after progress changes, and when
  * another tab writes progress.
  */
@@ -86,9 +88,9 @@ export function useCalendar() {
     };
   }, [tick]);
 
-  // Dev panel changed the simulated date or progress (dev builds only).
+  // Dev panel changed the simulated date or progress (dev mode only).
   useEffect(() => {
-    if (!import.meta.env.DEV) return;
+    if (!isDevMode()) return;
     const onDevChange = () => {
       setProgress(store.read());
       tick();
@@ -97,7 +99,7 @@ export function useCalendar() {
     return () => window.removeEventListener(DEV_CHANGE_EVENT, onDevChange);
   }, [store, tick]);
 
-  const today = useMemo(() => zurichLocalDate(now), [now]);
+  const today = useMemo(() => calendarDateAt(now), [now]);
   const todayIso = toIsoDate(today);
   const policyCalendar = useMemo(() => ({ year: CALENDAR.year, policy: 'STRICT_DATE' as const }), []);
 
@@ -129,7 +131,7 @@ export function useCalendar() {
     };
   }, [policyCalendar, today, now, openedDays, dayOpenedToday, progress.opened]);
 
-  // Wake up just after the next Zurich midnight. Browsers clamp/throttle long
+  // Wake up just after the next day start (00:01 Zurich). Browsers clamp/throttle long
   // timers, so cap the delay and simply re-arm; reaching the target re-derives
   // door states (it never unlocks anything by itself).
   useEffect(() => {
@@ -154,7 +156,7 @@ export function useCalendar() {
   const openDoor = useCallback(
     (day: number): OpenOutcome => {
       const instant = currentInstant();
-      const date = zurichLocalDate(instant);
+      const date = calendarDateAt(instant);
       const latest = store.read();
       if (latest.opened[String(day)]) {
         return { ok: true, openedAt: latest.opened[String(day)]!.openedAt, firstOpen: false };

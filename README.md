@@ -23,21 +23,22 @@ npm install
 npm run dev            # http://localhost:5173
 ```
 
-`npm run dev` starts an explicit **local demo**: the real API handler runs
-inside Vite against an embedded Postgres (PGlite) with the fictional example
-calendar. The login screen shows the demo access code
-(`lebkuchen-im-schnee`). The **Demo** button (top right; dev only) lets you:
+### Dev mode (hidden)
 
-- jump to any date (before, during and after December; a running clock just
-  before midnight to watch the transition),
-- simulate opening history (opened / missed doors, all 24 to preview every
-  layout),
-- add latency, make the next request fail, force reduced motion.
+Tap the **top-left corner five times** quickly, then enter the dev password.
+This works locally and on the deployed site (handy for checking on a phone).
+The dev panel (top right) lets you simulate any date, preset opened/missed
+doors, jump to game checkpoints and force reduced motion.
 
-None of this exists in a production build: the demo panel is excluded at
-build time, `/api/demo/*` exists only in the Vite dev server, and the
-production function always uses the database clock (see
-[docs/SECURITY.md](docs/SECURITY.md)).
+- Set or change the password: `npm run dev:password`, then commit
+  `src/dev/devPassword.ts` and deploy. Only a salted hash is stored.
+- Dev mode uses its own storage (`advent:dev:…`), so real progress is never
+  touched. It lasts for the current tab; "Dev-Modus beenden" leaves it.
+- It is a static site: the password check runs in the browser. It keeps the
+  panel out of the way; it is not access control.
+
+Doors open at **00:01** Zurich time (`DOOR_OPENS_AFTER_MINUTES` in
+`src/lib/calendarPolicy.ts`).
 
 ## Commands
 

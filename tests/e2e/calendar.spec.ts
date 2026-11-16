@@ -138,13 +138,17 @@ test('the same calendar does not restart in another year', async ({ page }) => {
   await expect(page.locator('button.house[data-state="available"]')).toHaveCount(0);
 });
 
-test('crossing Zurich midnight makes the next door available without a reload', async ({ page }) => {
+test('the next door opens at 00:01 Zurich time without a reload', async ({ page }) => {
   // 23:59 on 5 December in Zurich; door 5 is today's door.
   await visit(page, { at: zurichInstant(YEAR, 12, 5, 23, 59) });
   await expect(door(page, 5)).toHaveAttribute('data-state', 'available');
   await expect(door(page, 6)).toHaveAttribute('data-state', 'locked');
-  // Move past midnight; the countdown reaching zero re-derives the states.
-  await page.clock.fastForward('02:10');
+  // 00:00:30: past midnight, but the new day only starts at 00:01.
+  await page.clock.fastForward('01:30');
+  await expect(door(page, 6)).toHaveAttribute('data-state', 'locked');
+  await expect(door(page, 5)).toHaveAttribute('data-state', 'available');
+  // 00:01:30: the countdown reaching zero re-derives the states.
+  await page.clock.fastForward('01:00');
   await expect(door(page, 6)).toHaveAttribute('data-state', 'available');
   await expect(door(page, 5)).toHaveAttribute('data-state', 'missed');
 });

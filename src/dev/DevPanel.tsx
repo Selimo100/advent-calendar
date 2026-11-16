@@ -1,18 +1,15 @@
 /**
- * DEVELOPMENT ONLY. Loaded behind `import.meta.env.DEV`, so it is not part of
- * a production build. It writes to the same dev-namespaced localStorage keys
- * the app uses in development (`advent:dev:…`), so these previews never touch
- * real progress.
- *
- * There is deliberately no production query parameter or date override: this
- * panel exists to keep the recipient's experience clean while developing, not
- * to claim the calendar is tamper-proof.
+ * Dev-mode panel. Loaded only after dev mode was unlocked (5 taps in the
+ * top-left corner + password, see lib/devMode.ts). It writes to the
+ * dev-namespaced localStorage keys (`advent:dev:…`), so these previews never
+ * touch real progress.
  */
 import { useEffect, useState } from 'react';
 import { CALENDAR, GAME_DAY } from '../lib/calendarData.ts';
 import { createProgressStore, emptyProgress, type Progress } from '../lib/calendarStorage.ts';
 import { DEV_CHANGE_EVENT, devSimulatedInstant, setDevSimulatedInstant } from '../lib/clock.ts';
 import { LEVEL } from '../games/samichlaus/level.ts';
+import { exitDevMode } from '../lib/devMode.ts';
 import { zurichStartOfDay } from '../lib/time.ts';
 
 const zurich = (year: number, month: number, day: number, hour = 9, minute = 0) =>
@@ -23,7 +20,8 @@ const YEAR = CALENDAR.year;
 const DATE_PRESETS: { label: string; at: Date | null }[] = [
   { label: 'Echte Zeit', at: null },
   { label: `15.11. (vorher)`, at: zurich(YEAR, 11, 15, 10) },
-  { label: '01.12. 00:00', at: zurich(YEAR, 12, 1, 0, 1) },
+  { label: '01.12. 00:00', at: zurich(YEAR, 12, 1, 0, 0) },
+  { label: '01.12. 00:01', at: zurich(YEAR, 12, 1, 0, 1) },
   { label: '05.12.', at: zurich(YEAR, 12, 5) },
   { label: '06.12. (Spiel)', at: zurich(YEAR, 12, 6) },
   { label: '10.12.', at: zurich(YEAR, 12, 10) },
@@ -86,7 +84,7 @@ export default function DevPanel() {
   const openedList = Object.keys(progress.opened).map(Number).sort((a, b) => a - b);
 
   return (
-    <div className="fixed top-2 right-2 z-50 text-[13px] text-ink">
+    <div className="fixed top-[max(0.5rem,env(safe-area-inset-top))] right-2 z-50 text-[13px] text-ink">
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
@@ -96,11 +94,15 @@ export default function DevPanel() {
         Dev
       </button>
       {open && (
-        <div className="paper mt-2 max-h-[80dvh] w-[20rem] overflow-y-auto rounded-xl p-3 shadow-2xl">
-          <p className="font-semibold">Entwicklungs-Vorschau</p>
+        <div className="paper mt-2 max-h-[80dvh] w-[min(20rem,calc(100vw-1rem))] overflow-y-auto rounded-xl p-3 shadow-2xl">
+          <div className="flex items-start justify-between gap-2">
+            <p className="font-semibold">Dev-Modus</p>
+            <button type="button" className="min-h-8 rounded border border-burgundy/40 px-2 py-1 font-semibold text-burgundy" onClick={exitDevMode}>
+              Dev-Modus beenden
+            </button>
+          </div>
           <p className="text-ink-soft">
-            Nur in der Entwicklung. Eigener Speicher-Namensraum (<code>advent:dev:…</code>). In der Produktion gibt es keine
-            Datumssteuerung.
+            Eigener Speicher (<code>advent:dev:…</code>): Der echte Fortschritt bleibt unberührt. Gilt nur in diesem Tab.
           </p>
 
           <fieldset className="mt-3">

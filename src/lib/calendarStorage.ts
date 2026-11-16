@@ -10,6 +10,8 @@
  * transactional storage and not a security mechanism.
  */
 
+import { isDevMode } from './devMode.ts';
+
 export interface OpenedRecord {
   /** Instant of the first opening (ISO). */
   openedAt: string;
@@ -167,11 +169,10 @@ function defaultStorage(): Storage | undefined {
   }
 }
 
-/** Dev builds use a separate namespace so previews never touch real progress. */
-const NAMESPACE = import.meta.env.DEV ? 'advent:dev' : 'advent';
-
+/** Dev mode uses a separate namespace so previews never touch real progress. */
 export function progressKey(calendarId: string, year: number): string {
-  return `${NAMESPACE}:v1:progress:${calendarId}:${year}`;
+  const namespace = isDevMode() ? 'advent:dev' : 'advent';
+  return `${namespace}:v1:progress:${calendarId}:${year}`;
 }
 
 export function createProgressStore(calendarId: string, year: number, storage: Storage | undefined = defaultStorage()): ProgressStore {

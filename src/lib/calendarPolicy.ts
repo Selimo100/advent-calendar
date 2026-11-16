@@ -13,6 +13,8 @@
  * Policy: STRICT_DATE (the only policy implemented)
  *   - Door N can be opened for the first time only on N December of the
  *     calendar's configured year, as observed in Europe/Zurich.
+ *   - A calendar day starts at 00:01 Zurich time (DOOR_OPENS_AFTER_MINUTES),
+ *     not at midnight: from 00:00 to 00:01 it is still the previous day.
  *   - At most one distinct new door per calendar date.
  *   - Already-opened doors stay readable forever (including after December).
  *   - Missed doors stay closed. Future doors never reveal anything.
@@ -36,6 +38,20 @@ import {
 } from './time.ts';
 
 export type OpeningPolicyName = 'STRICT_DATE';
+
+/** Minutes after Zurich midnight at which a new calendar day (and its door) begins. */
+export const DOOR_OPENS_AFTER_MINUTES = 1;
+const DAY_START_OFFSET_MS = DOOR_OPENS_AFTER_MINUTES * 60_000;
+
+/** The calendar date at `instant`: the Zurich date, rolling over at 00:01 instead of 00:00. */
+export function calendarDateAt(instant: Date): LocalDate {
+  return zurichLocalDate(new Date(instant.getTime() - DAY_START_OFFSET_MS));
+}
+
+/** The instant at which the given calendar date begins (00:01 Zurich). */
+export function calendarDayStartsAt(date: LocalDate): Date {
+  return new Date(zurichStartOfDay(date).getTime() + DAY_START_OFFSET_MS);
+}
 export const DEFAULT_OPENING_POLICY: OpeningPolicyName = 'STRICT_DATE';
 
 export type CalendarPhase = 'before' | 'advent' | 'after';
@@ -116,17 +132,17 @@ export function deriveDoorState(input: {
 
 /**
  * The next instant at which any door state can change on its own (the next
- * Zurich midnight up to and including 25 December). Null once the calendar is
+ * 00:01 Zurich time, up to and including 25 December). Null once the calendar is
  * over. Clients use it only to schedule a refresh, never to unlock anything.
  */
 export function nextTransitionAt(calendar: PolicyCalendar, now: Date): Date | null {
-  const today = zurichLocalDate(now);
+  const today = calendarDateAt(now);
   if (calendarPhase(calendar, today) === 'after') return null;
-  return zurichStartOfDay(addDays(today, 1));
+  return calendarDayStartsAt(addDays(today, 1));
 }
 
 export function calendarStartsAt(calendar: PolicyCalendar): Date {
-  return zurichStartOfDay(decemberDate(calendar.year, ADVENT_FIRST_DAY));
+  return calendarDayStartsAt(decemberDate(calendar.year, ADVENT_FIRST_DAY));
 }
 
 export const ALL_DOOR_DAYS: readonly number[] = Array.from(

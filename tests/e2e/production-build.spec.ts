@@ -111,9 +111,6 @@ test('the built files contain no backend references', async () => {
     'pglite',
     'passphrase',
     'Zugangscode',
-    'DevPanel',
-    'Entwicklungs-Vorschau',
-    'advent:dev',
   ]) {
     expect(all, `built output must not contain "${forbidden}"`).not.toContain(forbidden);
   }
@@ -141,14 +138,14 @@ test('the app works with the device clock only, offline after the first load', a
   notFound.length = 0;
 });
 
-test('the dev-only date simulation has no production entry point', async ({ page }) => {
+test('the date simulation only works in unlocked dev mode', async ({ page }) => {
   await page.clock.install({ time: zurichInstant(YEAR, 12, 5) });
   // A query parameter must not be able to move the date.
   await page.goto(`${base}/?at=2026-12-24T10:00:00Z&date=2026-12-24&day=24`);
   await expect(page.getByText('Heute · 05.12.2026')).toBeVisible();
   await expect(door(page, 24)).toHaveAttribute('data-state', 'locked');
 
-  // Writing the dev key does nothing in a production build.
+  // Writing the dev key does nothing without dev mode.
   await page.evaluate(() => window.localStorage.setItem('advent:dev:now', '2026-12-24T09:00:00.000Z'));
   await page.reload();
   await expect(page.getByText('Heute · 05.12.2026')).toBeVisible();
@@ -158,4 +155,38 @@ test('the dev-only date simulation has no production entry point', async ({ page
 test('visit helper also works against the preview server', async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 5) });
   await expect(page.locator('button.house')).toHaveCount(24);
+});
+
+test('dev mode is hidden until the top-left corner is tapped five times', async ({ page }) => {
+  await page.clock.install({ time: zurichInstant(YEAR, 12, 5) });
+  await page.goto(base);
+  await expect(page.locator('button.house')).toHaveCount(24);
+  const corner = page.getByTestId('dev-corner');
+  const prompt = page.getByRole('dialog', { name: 'Dev-Modus' });
+
+  // Nothing visible, and four taps are not enough.
+  await expect(page.getByRole('button', { name: 'Dev' })).toHaveCount(0);
+  for (let i = 0; i < 4; i++) await corner.click({ position: { x: 10, y: 10 } });
+  await expect(prompt).toHaveCount(0);
+
+  // Taps too far apart do not add up.
+  await page.clock.fastForward(2000);
+  await corner.click({ position: { x: 10, y: 10 } });
+  await expect(prompt).toHaveCount(0);
+
+  await page.clock.fastForward(2000);
+  for (let i = 0; i < 5; i++) await corner.click({ position: { x: 10, y: 10 } });
+  await expect(prompt).toBeVisible();
+
+  const password = page.getByLabel('Passwort');
+  if (await password.count()) {
+    await password.fill('definitiv-falsch');
+    await page.getByRole('button', { name: 'Entsperren' }).click();
+    await page.clock.fastForward(1000);
+    await expect(page.getByRole('alert')).toHaveText('Falsches Passwort.');
+    await expect(page.getByRole('button', { name: 'Dev' })).toHaveCount(0);
+  }
+  await page.keyboard.press('Escape');
+  await expect(prompt).toHaveCount(0);
+  notFound.length = 0;
 });

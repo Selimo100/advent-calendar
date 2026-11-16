@@ -23,7 +23,7 @@ export default defineCalendar({
     recipientName: "Joya",
     senderName: "Selina <3",
     title: "24 chlini Gründ, wieso du mir wichtig bisch",
-    greeting: "Hey Joya",
+    greeting: "Heyyy Amore mio",
     intro:
       "I dem chline Dorf wartet jede Tag im Dezember es neus Tüürli uf dich. Jedes verzählt es bizzli meh, warum du mir so unglaublich wichtig bisch.",
     signature: "Vo Herze, Selina <3",

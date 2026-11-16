@@ -3,7 +3,7 @@ import type { Block as ContentBlock } from '../../content/schema.ts';
 import { isPlaceholder } from '../../content/placeholders.ts';
 import { parseSpotifyUrl, spotifyEmbedUrl, type SpotifyKind } from '../../content/spotify.ts';
 import { isoToGerman } from '../../lib/format.ts';
-import { CalendarIcon, ExternalIcon, MapPinIcon, MicIcon, MusicIcon, StarIcon } from '../icons.tsx';
+import { CalendarIcon, MapPinIcon, MicIcon, MusicIcon, StarIcon } from '../icons.tsx';
 import { StaticAudio, StaticImage, StaticVideo } from './Media.tsx';
 import { Inline, Paragraphs } from './Text.tsx';
 

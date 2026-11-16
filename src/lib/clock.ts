@@ -1,16 +1,16 @@
 /**
- * The clock used by the calendar. In production this is simply the device
- * clock (an honest, documented limitation of a static site). In development
- * the dev panel can simulate any instant via localStorage; that code path is
- * compiled out of production builds.
+ * The clock used by the calendar: the device clock (an honest, documented
+ * limitation of a static site). Only in dev mode (see lib/devMode.ts) can the
+ * dev panel simulate another instant via localStorage.
  */
+import { isDevMode } from './devMode.ts';
 
 export const DEV_NOW_KEY = 'advent:dev:now';
 export const DEV_CHANGE_EVENT = 'advent:dev-change';
 
-/** The simulated instant, if one is set (DEV only). */
+/** The simulated instant, if one is set (dev mode only). */
 export function devSimulatedInstant(): Date | null {
-  if (!import.meta.env.DEV) return null;
+  if (!isDevMode()) return null;
   try {
     const value = localStorage.getItem(DEV_NOW_KEY);
     if (!value) return null;
@@ -22,7 +22,7 @@ export function devSimulatedInstant(): Date | null {
 }
 
 export function setDevSimulatedInstant(instant: Date | null): void {
-  if (!import.meta.env.DEV) return;
+  if (!isDevMode()) return;
   try {
     if (instant) localStorage.setItem(DEV_NOW_KEY, instant.toISOString());
     else localStorage.removeItem(DEV_NOW_KEY);

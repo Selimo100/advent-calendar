@@ -49,7 +49,7 @@ export function TodayStatus({
     detail =
       remaining !== null && remaining > 0
         ? `Noch ${formatDuration(remaining).replace(/\.$/, '')}. Bis det ane bliibet alli Tüürli zue.`
-        : 'Gleich geht es los …';
+        : 'Bald gahts los...';
   } else if (overview.phase === 'after') {
     headline = overview.calendar.settings.closingMessage;
     detail =

@@ -1,15 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import {
+  calendarDateAt,
   calendarPhase,
   deriveDoorState,
   evaluateFirstOpening,
   nextTransitionAt,
   type PolicyCalendar,
 } from '../../src/lib/calendarPolicy.ts';
-import { zurichLocalDate, type LocalDate } from '../../src/lib/time.ts';
+import type { LocalDate } from '../../src/lib/time.ts';
 
 const cal: PolicyCalendar = { year: 2026, policy: 'STRICT_DATE' };
-const d = (iso: string): LocalDate => zurichLocalDate(new Date(iso));
+const d = (iso: string): LocalDate => calendarDateAt(new Date(iso));
 const decide = (day: number, at: string, openedToday: number | null = null) =>
   evaluateFirstOpening({ calendar: cal, day, today: d(at), dayAlreadyOpenedToday: openedToday });
 
@@ -19,8 +20,19 @@ describe('STRICT_DATE opening policy', () => {
     expect(calendarPhase(cal, d('2026-11-30T22:59:59Z'))).toBe('before');
   });
 
-  it('allows door 1 exactly at the start of 01.12.2026 in Zurich', () => {
-    expect(decide(1, '2026-11-30T23:00:00Z')).toEqual({ allowed: true });
+  it('keeps door 1 closed from 00:00 until 00:01 on 01.12.2026 (Zurich)', () => {
+    expect(decide(1, '2026-11-30T23:00:00Z')).toEqual({ allowed: false, reason: 'DOOR_LOCKED' });
+    expect(decide(1, '2026-11-30T23:00:59.999Z')).toEqual({ allowed: false, reason: 'DOOR_LOCKED' });
+  });
+
+  it('allows door 1 exactly at 00:01 on 01.12.2026 in Zurich', () => {
+    expect(decide(1, '2026-11-30T23:01:00Z')).toEqual({ allowed: true });
+  });
+
+  it('keeps the previous door available until 00:01', () => {
+    expect(decide(4, '2026-12-04T23:00:30Z')).toEqual({ allowed: true });
+    expect(decide(5, '2026-12-04T23:00:30Z')).toEqual({ allowed: false, reason: 'DOOR_LOCKED' });
+    expect(decide(24, '2026-12-24T23:00:30Z')).toEqual({ allowed: true });
   });
 
   it('uses Zurich midnight even when UTC is still on the previous date', () => {
@@ -65,9 +77,9 @@ describe('STRICT_DATE opening policy', () => {
     expect(state(5, '2026-12-05T10:00:00Z')).toBe('available');
   });
 
-  it('schedules the next transition at the next Zurich midnight, none after the calendar', () => {
-    expect(nextTransitionAt(cal, new Date('2026-12-05T10:00:00Z'))?.toISOString()).toBe('2026-12-05T23:00:00.000Z');
-    expect(nextTransitionAt(cal, new Date('2026-12-24T10:00:00Z'))?.toISOString()).toBe('2026-12-24T23:00:00.000Z');
+  it('schedules the next transition at the next 00:01 Zurich time, none after the calendar', () => {
+    expect(nextTransitionAt(cal, new Date('2026-12-05T10:00:00Z'))?.toISOString()).toBe('2026-12-05T23:01:00.000Z');
+    expect(nextTransitionAt(cal, new Date('2026-12-24T10:00:00Z'))?.toISOString()).toBe('2026-12-24T23:01:00.000Z');
     expect(nextTransitionAt(cal, new Date('2026-12-25T10:00:00Z'))).toBeNull();
   });
 });
