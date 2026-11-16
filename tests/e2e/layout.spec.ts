@@ -32,6 +32,16 @@ for (const size of SIZES) {
     await expect(page.locator('button.house')).toHaveCount(24);
     await expectNoHorizontalOverflow(page);
 
+    // The decorative moon never sits on top of the title.
+    const moonBox = (await page.locator('.moon').boundingBox())!;
+    const titleBox = (await page.locator('h1').boundingBox())!;
+    const overlaps =
+      moonBox.x < titleBox.x + titleBox.width &&
+      titleBox.x < moonBox.x + moonBox.width &&
+      moonBox.y < titleBox.y + titleBox.height &&
+      titleBox.y < moonBox.y + moonBox.height;
+    expect(overlaps, 'moon must not cover the title').toBe(false);
+
     // Every door is a comfortable tap target.
     const smallest = await page.locator('button.house').evaluateAll((nodes) =>
       Math.min(...nodes.map((node) => Math.min(node.getBoundingClientRect().width, node.getBoundingClientRect().height))),

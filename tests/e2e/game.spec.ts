@@ -6,7 +6,7 @@ const REWARD_TEXT = /Hier steht die Nachricht, die der Samichlaus/;
 test('door 6 can only be opened for the first time on 6 December', async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 5) });
   await door(page, 6).click();
-  await expect(page.getByRole('status').filter({ hasText: `Türchen 6 öffnet sich am 06.12.${YEAR}.` })).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: `Tüürli 6 öffnet sich am 06.12.${YEAR}.` })).toBeVisible();
   await expect(page.getByRole('dialog')).toBeHidden();
 });
 
@@ -177,7 +177,7 @@ test('a missed day 6 stays missed, and the game is not offered', async ({ page }
   await visit(page, { at: zurichInstant(YEAR, 12, 10) });
   await expect(door(page, 6)).toHaveAttribute('data-state', 'missed');
   await door(page, 6).click();
-  await expect(page.getByText(`Türchen 6 hatte seinen Tag am 06.12.${YEAR}.`)).toBeVisible();
+  await expect(page.getByText(`Tüürli 6 hatte seinen Tag am 06.12.${YEAR}.`)).toBeVisible();
   await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByText('Deine Mission wartet.')).toHaveCount(0);
 });

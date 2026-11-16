@@ -167,7 +167,7 @@ export default function DevPanel() {
           </fieldset>
 
           <fieldset className="mt-3">
-            <legend className="font-semibold">Türchen {GAME_DAY}: Samichlaus-Spiel</legend>
+            <legend className="font-semibold">Tüürli {GAME_DAY}: Samichlaus-Spiel</legend>
             <div className="mt-1 flex flex-wrap gap-1">
               <button
                 type="button"

@@ -252,13 +252,13 @@ export default function GameShell({ victoryText, game, prefs, updateGame, update
   return (
     <div className="game-root" role="group" aria-label="Samichlaus-Mission">
       <div className="game-bar">
-        <button type="button" onClick={playing ? pause : exit} className="game-chip" aria-label={playing ? 'Spiel pausieren' : 'Zurück zum Kalender'}>
+        <button type="button" onClick={playing ? pause : exit} className="game-chip" aria-label={playing ? 'Spiel pausiere' : 'Zrugg zum Kalender'}>
           {playing ? 'Pause' : 'Zurück'}
         </button>
         <p className="game-section" aria-live="polite">
           {summary?.section ?? LEVEL.sections[0]!.name}
         </p>
-        <p className="game-chip game-chip-static" aria-label={`${summary?.presents ?? 0} von ${LEVEL.presents.length} Geschenken gefunden`}>
+        <p className="game-chip game-chip-static" aria-label={`${summary?.presents ?? 0} von ${LEVEL.presents.length} Geschänckli gfunde`}>
           <span aria-hidden="true">🎁</span> {summary?.presents ?? 0}/{LEVEL.presents.length}
         </p>
       </div>
@@ -268,17 +268,17 @@ export default function GameShell({ victoryText, game, prefs, updateGame, update
       </div>
 
       <div className="game-stage" ref={stageRef}>
-        <canvas ref={canvasRef} className="game-canvas" aria-label="Der Samichlaus im Winterwald" role="img" />
+        <canvas ref={canvasRef} className="game-canvas" aria-label="De Samichlaus im Winterwald" role="img" />
 
         {assistOffer && playing && (
           <div className="game-offer" role="status">
-            <p>Möchtest du ein bisschen Unterstützung?</p>
+            <p>Bruchsch echli Hilf?</p>
             <div className="game-offer-actions">
               <button type="button" onClick={() => toggleAssist(true)} className="game-button game-button-primary">
                 Ja, bitte
               </button>
               <button type="button" onClick={() => setAssistOffer(false)} className="game-button">
-                Weiter so
+                Wiiter so
               </button>
             </div>
           </div>
@@ -286,17 +286,17 @@ export default function GameShell({ victoryText, game, prefs, updateGame, update
 
         {screen === 'start' && (
           <Overlay title="Die Mission">
-            <p>Hilf dem Samichlaus über die verschneiten Plattformen bis zur warm erleuchteten Hütte. Dort gibt er seinen Sack ab.</p>
+            <p>Hilf em Samichlaus über die verschiedene Plattforme bis zum warm erlüchtete Hüttli. Det git er dir es Sechli ab.</p>
             <ul className="game-list">
-              <li>Am Handy: links und rechts die Pfeiltasten, rechts unten der grosse Sprungknopf.</li>
-              <li>Am Computer: A und D oder die Pfeiltasten, springen mit Leertaste, Pause mit Escape.</li>
-              <li>Den Sprungknopf länger halten, um höher zu springen.</li>
-              <li>Unbegrenzte Versuche. Nach einem Sturz geht es beim letzten Laternen-Zwischenstand weiter.</li>
+              <li>Am Handy: links und rächts d Pfiiltaste, rächts une de grossi Sprungchnopf.</li>
+              <li>Am Laptop: A und D oder d Pfiiltaste, springe mit de Leertaste und Pause mit escape.</li>
+              <li>Um länger z gumpe de Sprungchnopf lang druckt bhalte.</li>
+              <li>Unendlich Versüech. Wenn du abegheisch spawnsch bim letzte Spawnpoint.</li>
             </ul>
             <div className="game-actions">
               {resumeCheckpoint.current && (
                 <button type="button" onClick={() => startMission(true)} className="game-button game-button-primary" autoFocus>
-                  Beim Zwischenstand weiter
+                  Bim Zwüschestand wiiter
                 </button>
               )}
               <button
@@ -308,7 +308,7 @@ export default function GameShell({ victoryText, game, prefs, updateGame, update
                 {resumeCheckpoint.current ? 'Von vorne beginnen' : 'Los geht es'}
               </button>
               <button type="button" onClick={exit} className="game-button game-button-quiet">
-                Zurück zum Kalender
+                Zrugg zum Kalender
               </button>
             </div>
             <AssistToggle assist={assist} sound={sound} onAssist={toggleAssist} onSound={toggleSound} />
@@ -319,18 +319,18 @@ export default function GameShell({ victoryText, game, prefs, updateGame, update
           <Overlay title="Pause">
             <p>
               {summary?.checkpointLabel
-                ? `Letzter Zwischenstand: ${summary.checkpointLabel}.`
-                : 'Noch kein Zwischenstand erreicht. Die erste Laterne ist nicht weit.'}
+                ? `Letzti Zwüschestand: ${summary.checkpointLabel}.`
+                : 'No kein Zwüschestand erreicht. D Laterne isch nöd wiit weg.'}
             </p>
             <div className="game-actions">
               <button type="button" onClick={resume} className="game-button game-button-primary" autoFocus>
-                Weiterspielen
+                Wiiterspiele
               </button>
               <button type="button" onClick={restartCheckpoint} className="game-button">
-                Beim Zwischenstand neu starten
+                Bim Zwüschestand neu starte
               </button>
               <button type="button" onClick={exit} className="game-button game-button-quiet">
-                Zurück zum Kalender
+                Zrugg zum Kalender
               </button>
             </div>
             <AssistToggle assist={assist} sound={sound} onAssist={toggleAssist} onSound={toggleSound} />
@@ -347,13 +347,13 @@ export default function GameShell({ victoryText, game, prefs, updateGame, update
             )}
             <div className="game-actions">
               <button type="button" onClick={onShowReward} className="game-button game-button-primary" autoFocus>
-                Deine Nachricht öffnen
+                Dini Nachricht ufmache
               </button>
               <button type="button" onClick={() => startMission(false)} className="game-button">
-                Noch einmal spielen
+                Nomal spiele
               </button>
               <button type="button" onClick={exit} className="game-button game-button-quiet">
-                Zurück zum Kalender
+                Zrugg zum Kalender
               </button>
             </div>
           </Overlay>
@@ -410,14 +410,14 @@ function AssistToggle({
       <label className="game-toggle">
         <input type="checkbox" checked={assist} onChange={(event) => onAssist(event.target.checked)} />
         <span>
-          Unterstützung
+          Hilf
           <small>Längere Sprungzeit, langsamere Hindernisse, breitere Plattformen und ein zusätzlicher Zwischenstand.</small>
         </span>
       </label>
       <label className="game-toggle">
         <input type="checkbox" checked={sound} onChange={(event) => onSound(event.target.checked)} />
         <span>
-          Töne
+          Tön
           <small>Kleine Geräusche beim Springen und Ankommen. Standardmässig aus.</small>
         </span>
       </label>

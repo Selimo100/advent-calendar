@@ -45,10 +45,10 @@ export function TodayStatus({
   let headline: string;
   let detail: string | null = null;
   if (overview.phase === 'before') {
-    headline = `Der Kalender beginnt am ${formatGermanDate(zurichLocalDate(overview.startsAt))}.`;
+    headline = `De Kalender fang am ${formatGermanDate(zurichLocalDate(overview.startsAt))} ah.`;
     detail =
       remaining !== null && remaining > 0
-        ? `Noch ${formatDuration(remaining).replace(/\.$/, '')}. Bis dahin bleiben alle Türchen verschlossen.`
+        ? `Noch ${formatDuration(remaining).replace(/\.$/, '')}. Bis det ane bliibet alli Tüürli zue.`
         : 'Gleich geht es los …';
   } else if (overview.phase === 'after') {
     headline = overview.calendar.settings.closingMessage;
@@ -56,26 +56,26 @@ export function TodayStatus({
       opened === 0
         ? null
         : opened === 1
-          ? 'Ein geöffnetes Türchen ist hier für dich aufbewahrt.'
-          : `${opened} geöffnete Türchen sind hier für dich aufbewahrt.`;
+          ? 'Es ufgmachts Tüürli isch für dich da ufbewahrt.'
+          : `${opened} göffneti Tüürli sind da für dich ufbewahrt.`;
   } else if (todayDoor?.state === 'available') {
-    headline = `Türchen ${todayDoor.day} wartet auf dich.`;
+    headline = `Tüürli ${todayDoor.day} wartet auf dich.`;
   } else if (todayDoor?.state === 'opened') {
-    headline = `Heute hast du Türchen ${todayDoor.day} geöffnet.`;
+    headline = `Heute hast du Tüürli ${todayDoor.day} geöffnet.`;
     detail =
       overview.todayDoor! < 24 && remaining !== null && remaining > 0
-        ? `Das nächste Türchen öffnet sich in ${formatDuration(remaining)}`.replace(/\.?$/, '.')
+        ? `Das nächste Tüürli öffnet sich in ${formatDuration(remaining)}`.replace(/\.?$/, '.')
         : overview.todayDoor === 24
           ? 'Frohe Weihnachten.'
           : null;
   } else {
-    headline = 'Schön, dass du da bist.';
+    headline = 'Schön, dass du da bisch.';
   }
 
   return (
     <section aria-labelledby="today-heading" className="rounded-2xl border border-gold/25 bg-midnight/70 px-4 py-4 shadow-lg sm:px-5">
       <p id="today-heading" className="text-[0.8rem] font-semibold tracking-[0.14em] text-gold uppercase">
-        {overview.phase === 'advent' ? `Heute · ${todayLabel}` : overview.phase === 'before' ? 'Bald ist Advent' : 'Nach dem Advent'}
+        {overview.phase === 'advent' ? `Heute · ${todayLabel}` : overview.phase === 'before' ? 'Bald isch Advent' : 'Nach em Advent'}
       </p>
       <p className="font-serif-display mt-1 text-[1.25rem] leading-snug text-ivory">{headline}</p>
       {detail && <p className="mt-1 text-[0.98rem] text-ivory-dim">{detail}</p>}
@@ -86,7 +86,7 @@ export function TodayStatus({
           className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-full bg-gold-bright px-5 font-semibold text-midnight shadow-md active:scale-[0.98]"
         >
           <StarIcon className="h-4 w-4" />
-          Zum heutigen Türchen
+          Zum hütige Tüürli
         </button>
       )}
     </section>
@@ -99,7 +99,7 @@ export function Progress({ overview }: { overview: Overview }) {
     <section aria-label="Fortschritt" className="mt-8">
       <div className="flex items-baseline justify-between gap-3">
         <p className="text-[0.95rem] text-ivory-dim">
-          <span className="font-semibold text-ivory">{opened}</span> von {total} Türchen geöffnet
+          <span className="font-semibold text-ivory">{opened}</span> vo {total} Tüürli ufgmacht
         </p>
       </div>
       <ol className="mt-2 grid grid-cols-12 gap-1.5 sm:grid-cols-24" aria-hidden="true">
@@ -121,10 +121,10 @@ export function Memories({ overview, onOpen }: { overview: Overview; onOpen: (da
   return (
     <section aria-labelledby="memories-heading" className="mt-10">
       <h2 id="memories-heading" className="font-serif-display text-[1.5rem] font-semibold text-ivory">
-        Geöffnete Türchen
+        Ufgmachti Tüürli
       </h2>
       {opened.length === 0 ? (
-        <p className="mt-2 text-ivory-dim">Hier sammeln sich die Türchen, die du geöffnet hast. Du kannst sie jederzeit wieder ansehen.</p>
+        <p className="mt-2 text-ivory-dim">Da gsehsch du d'Tüürli wo du scho ufgmacht hesch und chasch sie wenn du willsch wieder ahluege und ufmache.</p>
       ) : (
         <ul className="mt-3 grid gap-2 sm:grid-cols-2">
           {opened.map((d) => (

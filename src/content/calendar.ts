@@ -25,7 +25,7 @@ export default defineCalendar({
     title: "24 chlini Gründ, wieso du mir wichtig bisch",
     greeting: "Hey Joya",
     intro:
-      "I dem chline Dorf warted jede Tag im Dezember es neus Tüürli uf dich. Jedes verzählt es bizzli meh, warum du mir so unglaublich wichtig bisch.",
+      "I dem chline Dorf wartet jede Tag im Dezember es neus Tüürli uf dich. Jedes verzählt es bizzli meh, warum du mir so unglaublich wichtig bisch.",
     signature: "Vo Herze, Selina <3",
     closingMessage:
       "D Adventsziit isch verbi, aber d’Tüürli, wo du ufgmacht hesch, die bliibet für immer und es sind no so viel meh als nur die 24, glaub mir. Danke, dass du dir jede einzelni Tag en Moment gnoh hesch.",
@@ -109,7 +109,7 @@ export default defineCalendar({
       blocks: [
         {
           type: "voucher",
-          title: "Ein Abend, wo ich ussuech",
+          title: "En Abig, wo ich ussuech",
           description:
             "Ich entscheide, was mir machet. Ich kümmere mich um alles, was du willst.",
           conditions: [
@@ -178,7 +178,7 @@ export default defineCalendar({
             "Du musch es niemertem zeige. Aber ich würd mich natürlich freue hehe",
           ],
           ideas: [
-            "Ein Licht in der Dämmerung",
+            "Es Liecht i de Dämmerig",
             "Schneeball öppertem id Frässi hahaha",
           ],
         },
@@ -232,7 +232,7 @@ export default defineCalendar({
               caption: "Eusi Auge",
             },
           ],
-          location: "Assisi, Italien 11-16.10.2026",
+          location: "Assisi, Italie 11-16.10.2026",
           story: ["Ich weiss nöd öb es dir ufgfalle isch, aber han im Lager so oft soooo tüüf i dini Auge gluegt und dir Kompliment für dini Auge gmacht. Sie hend mich würklich eifach fasziniert und hans Gfühl gha die hend no so viel z'verzehle. Ich will alles usefinde was dehinter steckt. Jetzt bin ich am Punkt wo ich die Möglichkeit han und wow... Bin parat für alles was no chunnt und chans chum abwarte die Auge no Stunde und Jahre lang z'betrachte."],
         },
       ],
@@ -264,9 +264,6 @@ export default defineCalendar({
           ],
           audio: { src: "/media/audio/placeholder-voice.wav" },
           durationLabel: "0:03",
-          transcript: [
-            "[TRANSCRIPT] Hier steht später, was in der Sprachnachricht gesagt wird.",
-          ],
         },
       ],
     },
@@ -309,10 +306,10 @@ export default defineCalendar({
       blocks: [
         {
           type: "letter",
-          title: "Irgendwann will ich mit dir …",
+          title: "Irgendwänn will ich mit dir …",
           paragraphs: [
-            "Irendwenn will ich mit dir ih e Stadt reise, wo mir no nie gsie sind und die entdecke. Zäme i Restis gah wo mir nöd kännet und det neus gseh und usprobiere.",
-            "Irgendwenn will ich mit dir an es Konzert gah und dir zeige, wie ich ufgahn wenn ich Musig ghöre vo mine lieblings Künstler und gseh wie du singsch und alles us dinere Lunge use schreisch.",
+            "Irgendwänn will ich mit dir ih e Stadt reise, wo mir no nie gsie sind und die entdecke. Zäme i Restis gah wo mir nöd kännet und det neus gseh und usprobiere.",
+            "Irgendwänn will ich mit dir an es Konzert gah und dir zeige, wie ich ufgahn wenn ich Musig ghöre vo mine lieblings Künstler und gseh wie du singsch und alles us dinere Lunge use schreisch.",
           ],
         },
       ],

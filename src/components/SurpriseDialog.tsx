@@ -80,17 +80,17 @@ export function SurpriseDialog({ day, content, signature, openedDays, gameArea, 
         <div className="surprise-scroll" ref={scrollRef}>
           <article className={`paper deckle relative mx-auto min-h-full max-w-2xl px-5 pt-3 pb-8 sm:min-h-0 sm:px-10 sm:pb-10 ${isFinal ? 'final-card' : ''}`}>
             <header className="sticky top-0 z-10 -mx-5 mb-2 flex items-center justify-between bg-gradient-to-b from-ivory from-70% to-transparent px-5 pt-1 pb-3 sm:-mx-10 sm:px-10">
-              <p className="text-[0.85rem] font-semibold tracking-[0.14em] text-burgundy uppercase">
-                Türchen {day}
+              <p className="min-w-0 text-[0.85rem] font-semibold tracking-[0.14em] whitespace-nowrap text-burgundy uppercase">
+                Tüürli {day}
                 <span className="font-normal text-ink-soft normal-case tracking-normal"> · {isoToGerman(content.date)}</span>
               </p>
               <button
                 type="button"
                 onClick={onClose}
-                className="-mr-2 inline-flex h-11 min-w-11 items-center justify-center gap-1 rounded-full px-2 text-ink hover:bg-black/5"
+                className="-mr-2 inline-flex h-11 min-w-11 shrink-0 items-center justify-center gap-1 rounded-full px-2 text-ink hover:bg-black/5"
               >
                 <CloseIcon className="h-5 w-5" />
-                <span className="text-[0.95rem] font-semibold">Schliessen</span>
+                <span className="text-[0.95rem] font-semibold max-[359px]:sr-only">Zuemache</span>
               </button>
             </header>
 
@@ -98,7 +98,7 @@ export function SurpriseDialog({ day, content, signature, openedDays, gameArea, 
               id={titleId}
               ref={headingRef}
               tabIndex={-1}
-              className="font-serif-display mb-6 text-[2rem] leading-[1.1] font-semibold text-ink focus:outline-none sm:text-[2.4rem]"
+              className="font-serif-display mb-6 text-[1.75rem] leading-[1.1] font-semibold text-ink focus:outline-none min-[360px]:text-[2rem] sm:text-[2.4rem] [@media(max-height:500px)]:mb-4 [@media(max-height:500px)]:text-[1.75rem]"
             >
               {content.title}
             </h2>
@@ -115,7 +115,7 @@ export function SurpriseDialog({ day, content, signature, openedDays, gameArea, 
             )}
 
             {openedDays.length > 1 && (
-              <nav aria-label="Geöffnete Türchen" className="mt-10 flex items-center justify-between gap-3">
+              <nav aria-label="Geöffnete Tüürli" className="mt-10 flex items-center justify-between gap-3">
                 {prev !== undefined ? (
                   <button
                     type="button"
@@ -123,7 +123,7 @@ export function SurpriseDialog({ day, content, signature, openedDays, gameArea, 
                     className="inline-flex min-h-11 items-center gap-1 rounded-full border border-ink/15 px-4 font-semibold text-ink"
                   >
                     <ChevronLeft className="h-4 w-4" />
-                    Türchen {prev}
+                    Tüürli {prev}
                   </button>
                 ) : (
                   <span />
@@ -134,7 +134,7 @@ export function SurpriseDialog({ day, content, signature, openedDays, gameArea, 
                     onClick={() => onNavigate(next)}
                     className="inline-flex min-h-11 items-center gap-1 rounded-full border border-ink/15 px-4 font-semibold text-ink"
                   >
-                    Türchen {next}
+                    Tüürli {next}
                     <ChevronRight className="h-4 w-4" />
                   </button>
                 ) : (

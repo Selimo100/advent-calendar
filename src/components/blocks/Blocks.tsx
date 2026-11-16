@@ -40,7 +40,7 @@ function MemoryBlock({ block }: { block: Block<'memory'> }) {
   const date = block.date ? isoToGerman(block.date) : block.dateLabel;
   return (
     <section>
-      <Kicker>Erinnerung</Kicker>
+      <Kicker>Errinerig</Kicker>
       {block.title && <SectionTitle>{block.title}</SectionTitle>}
       <div className={`grid gap-4 ${(block.photos?.length ?? 0) + (block.videos?.length ?? 0) > 1 ? 'sm:grid-cols-2' : ''}`}>
         {block.videos?.map((video, i) => (
@@ -100,16 +100,6 @@ function SpotifyLink({ url, kind, label }: { url: string; kind: SpotifyKind; lab
           referrerPolicy="strict-origin-when-cross-origin"
         />
       </div>
-      <a
-        href={parsed.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-evergreen underline-offset-4 hover:underline"
-      >
-        In Spotify öffnen
-        <ExternalIcon className="h-3.5 w-3.5" />
-        <span className="sr-only">(öffnet Spotify in einem neuen Fenster)</span>
-      </a>
     </div>
   );
 }
@@ -149,7 +139,7 @@ function SongBlock({ block }: { block: Block<'song'> }) {
       <div>
         <SpotifyLink url={block.spotifyUrl} kind="track" label={`${block.trackTitle} von ${block.artist}`} />
       </div>
-      <h3 className="font-serif-display mt-6 mb-2 text-[1.2rem] font-semibold text-burgundy">Warum mich dieses Lied an uns erinnert</h3>
+      <h3 className="font-serif-display mt-6 mb-2 text-[1.2rem] font-semibold text-burgundy">Wieso mich das Lied a eus errineret.</h3>
       <Paragraphs items={block.whyItRemindsUs} className="text-[1.05rem] leading-relaxed" />
     </section>
   );
@@ -181,7 +171,7 @@ function PlaylistBlock({ block }: { block: Block<'playlist'> }) {
 function VoucherBlock({ block }: { block: Block<'voucher'> }) {
   return (
     <section className="voucher px-6 py-6 text-center sm:px-10">
-      <p className="text-[0.78rem] font-bold tracking-[0.3em] text-burgundy uppercase">Gutschein</p>
+      <p className="text-[0.78rem] font-bold tracking-[0.3em] text-burgundy uppercase">Guetschii</p>
       <p className="font-serif-display mt-3 text-[1.55rem] leading-snug font-semibold text-ink">{block.title}</p>
       <p className="mt-3 text-[1.05rem]">
         <Inline text={block.description} />
@@ -209,7 +199,7 @@ function VoiceBlock({ block }: { block: Block<'voice'> }) {
   const title = block.title ?? 'Sprachnachricht';
   return (
     <section>
-      <Kicker icon={<MicIcon className="h-4 w-4" />}>Zum Anhören</Kicker>
+      <Kicker icon={<MicIcon className="h-4 w-4" />}>Zum lose</Kicker>
       <SectionTitle>{title}</SectionTitle>
       {block.intro && <Paragraphs items={block.intro} className="mb-4 text-[1.05rem]" />}
       <div className="rounded-2xl bg-evergreen/10 p-4">
@@ -229,7 +219,7 @@ function VoiceBlock({ block }: { block: Block<'voice'> }) {
 function ActivityBlock({ block }: { block: Block<'activity'> }) {
   return (
     <section className="rounded-2xl border border-evergreen/25 bg-evergreen/[0.06] p-5">
-      <Kicker>Eine kleine Einladung</Kicker>
+      <Kicker>E chlini Ihladig</Kicker>
       <SectionTitle>{block.title}</SectionTitle>
       <Paragraphs items={block.invitation} className="text-[1.05rem]" />
       {block.ideas && (

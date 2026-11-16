@@ -16,7 +16,7 @@ export interface HouseProps {
 }
 
 function accessibleLabel({ day, year, state, title }: HouseProps): string {
-  const base = `Türchen ${day}`;
+  const base = `Tüürli ${day}`;
   switch (state) {
     case 'available':
       return `${base}, heute: jetzt öffnen`;

@@ -31,7 +31,7 @@ export function Village({ year, doors, todayDoor, celebrateDay, registerDoor, on
   };
 
   return (
-    <ul className="village" aria-label="Das Adventsdorf mit 24 Türchen">
+    <ul className="village" aria-label="Das Adventsdorf mit 24 Tüürli">
       {VILLAGE_ORDER.map((day) => (
         <li key={day}>{render(day)}</li>
       ))}

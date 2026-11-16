@@ -14,7 +14,7 @@ test('shows a countdown and a welcome before December', async ({ page }) => {
   await expect(page.getByText(`Der Kalender beginnt am 01.12.${YEAR}.`)).toBeVisible();
   await expect(page.getByText(/Noch 15 Tage/)).toBeVisible();
   await expect(page.locator('button.house[data-state="locked"]')).toHaveCount(24);
-  await expect(page.getByRole('button', { name: 'Zum heutigen Türchen' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Zum heutigen Tüürli' })).toHaveCount(0);
 });
 
 function voucherTitle(day: number): string {
@@ -32,8 +32,8 @@ function firstPhotoAlt(day: number): string {
 
 test("opens today's door and shows the surprise in an accessible dialog", async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 5) });
-  await expect(page.getByText('Türchen 5 wartet auf dich.')).toBeVisible();
-  await page.getByRole('button', { name: 'Zum heutigen Türchen' }).click();
+  await expect(page.getByText('Tüürli 5 wartet auf dich.')).toBeVisible();
+  await page.getByRole('button', { name: 'Zum heutigen Tüürli' }).click();
   await expect(door(page, 5)).toBeFocused();
   await door(page, 5).click();
   const dialog = page.getByRole('dialog', { name: titleOf(5) });
@@ -58,7 +58,7 @@ test('keeps opened doors after a reload', async ({ page }) => {
   await page.keyboard.press('Escape');
   await page.reload();
   await expect(door(page, 5)).toHaveAttribute('data-state', 'opened');
-  await expect(page.getByText('Heute hast du Türchen 5 geöffnet.')).toBeVisible();
+  await expect(page.getByText('Heute hast du Tüürli 5 geöffnet.')).toBeVisible();
 });
 
 test('browser back closes the dialog', async ({ page }) => {
@@ -73,7 +73,7 @@ test('browser back closes the dialog', async ({ page }) => {
 test('a future door explains its date and reveals nothing', async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 5) });
   await door(page, 9).click();
-  await expect(page.getByRole('status').filter({ hasText: `Türchen 9 öffnet sich am 09.12.${YEAR}.` })).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: `Tüürli 9 öffnet sich am 09.12.${YEAR}.` })).toBeVisible();
   await expect(page.getByRole('dialog')).toBeHidden();
   await expect(door(page, 9)).toHaveAttribute('data-state', 'locked');
 });
@@ -82,7 +82,7 @@ test('a missed door stays closed and is explained gently', async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 5) });
   await expect(door(page, 3)).toHaveAttribute('data-state', 'missed');
   await door(page, 3).click();
-  await expect(page.getByText(`Türchen 3 hatte seinen Tag am 03.12.${YEAR}.`)).toBeVisible();
+  await expect(page.getByText(`Tüürli 3 hatte seinen Tag am 03.12.${YEAR}.`)).toBeVisible();
   await expect(page.getByRole('dialog')).toBeHidden();
 });
 
@@ -94,7 +94,7 @@ test('only one new door per calendar date', async ({ page }) => {
   // Reading an older door does not consume anything, and no other door opens.
   await expect(door(page, 4)).toHaveAttribute('data-state', 'missed');
   await door(page, 4).click();
-  await expect(page.getByText(`Türchen 4 hatte seinen Tag am 04.12.${YEAR}.`)).toBeVisible();
+  await expect(page.getByText(`Tüürli 4 hatte seinen Tag am 04.12.${YEAR}.`)).toBeVisible();
 });
 
 test('revisiting an opened door does not use up the day', async ({ page }) => {
@@ -110,16 +110,16 @@ test('revisiting an opened door does not use up the day', async ({ page }) => {
 
 test('navigation in the dialog only reaches opened doors', async ({ page }) => {
   await visit(page, { at: zurichInstant(YEAR, 12, 26, 10), progress: { opened: [3, 4, 11] } });
-  await expect(page.getByText('3 geöffnete Türchen sind hier für dich aufbewahrt.')).toBeVisible();
-  await page.getByRole('region', { name: 'Geöffnete Türchen' }).getByRole('button', { name: titleOf(4) }).click();
+  await expect(page.getByText('3 geöffnete Tüürli sind hier für dich aufbewahrt.')).toBeVisible();
+  await page.getByRole('region', { name: 'Geöffnete Tüürli' }).getByRole('button', { name: titleOf(4) }).click();
   const dialog = page.getByRole('dialog', { name: titleOf(4) });
   await expect(dialog).toBeVisible();
   const image = dialog.getByRole('img', { name: firstPhotoAlt(4) });
   await expect(image).toBeVisible();
   await expect.poll(() => image.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
-  await dialog.getByRole('button', { name: 'Türchen 11' }).click();
+  await dialog.getByRole('button', { name: 'Tüürli 11' }).click();
   await expect(page.getByRole('dialog', { name: titleOf(11) })).toBeVisible();
-  await expect(page.getByRole('dialog').getByRole('button', { name: /Türchen 12/ })).toHaveCount(0);
+  await expect(page.getByRole('dialog').getByRole('button', { name: /Tüürli 12/ })).toHaveCount(0);
 });
 
 test('after 24 December opened doors stay readable and missed ones stay closed', async ({ page }) => {

@@ -79,25 +79,25 @@ export function CalendarPage() {
       if (!outcome.ok) {
         switch (outcome.reason) {
           case 'DOOR_LOCKED':
-            setNotice(`Türchen ${day} öffnet sich am ${doorDateLabel(year, day)}.`);
+            setNotice(`Tüürli ${day} öffnet sich am ${doorDateLabel(year, day)}.`);
             break;
           case 'DOOR_MISSED':
             setNotice(
-              `Türchen ${day} hatte seinen Tag am ${doorDateLabel(year, day)}. Damit jedes Türchen seinen eigenen Tag behält, bleibt es jetzt eingeschneit.`,
+              `Tüürli ${day} het sind Tag am ${doorDateLabel(year, day)}. Damit jedes Tüürli sin eigene Tag bhaltet, bliibt es jetzt ahgschalte.`,
             );
             break;
           case 'DAILY_LIMIT_REACHED':
-            setNotice('Heute wurde schon ein Türchen geöffnet. Das nächste folgt morgen.');
+            setNotice('Hüt hesch du dis Tüürli scho ufgmacht s nächste isch denn morn drah. Du Gwundernase.');
             break;
           default:
-            setNotice('Dieses Türchen lässt sich gerade nicht öffnen.');
+            setNotice('Das Tüürli gaht grad nöd uf.');
         }
         return;
       }
       // The door state flips to "opened" immediately; let the 3D swing play
       // before the card appears.
       swinging.current = true;
-      setAnnouncement(`Türchen ${day} ist offen.`);
+      setAnnouncement(`Tüürli ${day} ist offen.`);
       if (day === 24) setCelebrateDay(24);
       const delay = prefersReducedMotion() ? 120 : day === 24 ? 1100 : 780;
       window.setTimeout(() => {
@@ -119,15 +119,15 @@ export function CalendarPage() {
           return openToday(day);
         case 'missed':
           setNotice(
-            `Türchen ${day} hatte seinen Tag am ${doorDateLabel(year, day)}. Damit jedes Türchen seinen eigenen Tag behält, bleibt es jetzt eingeschneit.`,
+            `Tüürli ${day} het sin Tag am ${doorDateLabel(year, day)}. Damit jedes Tüürli sin eigene Tag bhaltet, bliibt es jetzt ahgschalte.`,
           );
           return;
         case 'locked':
         default:
           setNotice(
             overview.phase === 'before'
-              ? `Noch ein bisschen Geduld: Türchen ${day} öffnet sich am ${doorDateLabel(year, day)}.`
-              : `Türchen ${day} öffnet sich am ${doorDateLabel(year, day)}.`,
+              ? `No es bizzeli Geduld min Schatz: Tüürli ${day} gaht am ${doorDateLabel(year, day)} uf.`
+              : `Tüürli ${day} gaht am ${doorDateLabel(year, day)} uf.`,
           );
       }
     },
@@ -163,8 +163,7 @@ export function CalendarPage() {
         {storageWarning && !storageNoticeDismissed && (
           <p role="status" className="mx-auto mt-4 flex max-w-xl items-start gap-3 rounded-xl border border-gold/30 bg-midnight/80 px-4 py-3 text-[0.95rem] text-ivory-dim">
             <span className="flex-1">
-              Dein Fortschritt kann in diesem Browser gerade nicht gespeichert werden. Alles funktioniert trotzdem — aber beim nächsten
-              Besuch könnten geöffnete Türchen wieder geschlossen sein.
+              Din Fortschritt cahn gard nöd im Browser gspeicheret werde. Alles gaht trotzde aber viellicht sind d Tüürli bim nächste mal wieder zue.
             </span>
             <button type="button" className="min-h-11 min-w-11 px-2 font-semibold text-gold-bright" onClick={() => setStorageNoticeDismissed(true)}>
               OK
@@ -176,13 +175,13 @@ export function CalendarPage() {
           <TodayStatus overview={overview} onGoToToday={goToToday} onReachedMidnight={refresh} />
           {gameDoorOpened && !game.completed && (
             <p className="mt-3 flex items-center justify-between gap-3 rounded-2xl border border-gold/25 bg-midnight/70 px-4 py-3 text-[0.98rem] text-ivory-dim">
-              <span>Der Samichlaus ist noch unterwegs. Deine Mission wartet.</span>
+              <span>De Samichaus isch no unterwegs. Dini Mission wartet.</span>
               <button
                 type="button"
                 onClick={startGame}
                 className="min-h-11 shrink-0 rounded-full bg-burgundy px-4 font-semibold text-ivory shadow-md"
               >
-                Weiterspielen
+                Wiiterspiele
               </button>
             </p>
           )}
@@ -215,7 +214,7 @@ export function CalendarPage() {
           {settings.footerNote && <p className="mt-1 text-[0.92rem] text-ivory-dim">{settings.footerNote}</p>}
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-[0.92rem] text-ivory-dim">
             <button type="button" className="min-h-11 underline underline-offset-4" onClick={() => setSnow(!snow)}>
-              Schneefall {snow ? 'ausschalten' : 'einschalten'}
+              Schneie {snow ? 'usstelle' : 'ihstelle'}
             </button>
           </div>
         </footer>
@@ -227,7 +226,7 @@ export function CalendarPage() {
           {notice && (
             <div className="notice-enter pointer-events-auto flex items-start gap-3 rounded-2xl border border-gold/30 bg-midnight/95 px-4 py-3 text-[0.98rem] text-ivory shadow-2xl">
               <p className="flex-1 pt-1.5">{notice}</p>
-              <button type="button" className="min-h-11 min-w-11 shrink-0 px-2 text-ivory-dim" onClick={() => setNotice(null)} aria-label="Hinweis schliessen">
+              <button type="button" className="min-h-11 min-w-11 shrink-0 px-2 text-ivory-dim" onClick={() => setNotice(null)} aria-label="Hinweis Zuemache">
                 OK
               </button>
             </div>
@@ -331,10 +330,10 @@ function GameDoorArea({
         className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-full bg-burgundy px-7 text-[1.05rem] font-semibold text-ivory shadow-md"
       >
         <StarIcon className="h-4 w-4 text-gold-bright" />
-        {started ? 'Weiterspielen' : startLabel}
+        {started ? 'Wiiterspiele' : startLabel}
       </button>
-      {started && <p className="mt-3 text-[0.95rem] text-ink-soft">Dein Zwischenstand ist gespeichert. Du kannst jederzeit weitermachen.</p>}
-      {!started && <p className="mt-3 text-[0.95rem] text-ink-soft">Kein Zeitdruck: Du kannst die Mission auch an einem anderen Tag beenden.</p>}
+      {started && <p className="mt-3 text-[0.95rem] text-ink-soft">Din Zwüschestand wird gpeicheret. Du chasch jeder Ziit wiiterpsiele.</p>}
+      {!started && <p className="mt-3 text-[0.95rem] text-ink-soft">Kei Ziitdruck: Du chasch d Mission au amene andere Tag fertig mache.</p>}
     </section>
   );
 }
