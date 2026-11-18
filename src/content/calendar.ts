@@ -40,7 +40,7 @@ export default defineCalendar({
           type: "letter",
           title: "Liebi Joya",
           paragraphs: [
-            "hüt machsch du s erste Tüürli uf. Ich han mir überleit, wie ich dir im Dezember jede Tag e chlii Freud chönnti bereite und genau det drus isch das chline Dörfli entstande. (Es isch sogar no chliner als Breiti ;)",
+            "hüt machsch du s erste Tüürli uf. Ich han mir überleit, wie ich dir im Dezember jede Tag e chlini Freud chönnti bereite und genau det drus isch das chline Dörfli entstande. (Es isch sogar no chliner als Breiti hehe)",
             "Hinter jedem Tüürli steckt öppis, was ich dir scho lang han wele säge oder nie z Viel säge chan: e Errinerig e chlini Ihladig und no viel meh wo du im Dezember gseh wirsch. Han mich für ein chline digitale Adventskalender entschiede, will ich d Begeisterig vo dir gseh han, wo ich dir mini Websiite zeigt han, was mich so erfüllt het, dass ich denkt han das wär doch grad mal e gueti Möglichkeit.",
             "Jede Tag chunnt es neus Tüürli dezue. Die wo scho offe sind, bliibet da und du chasch sie so oft du willsch wieder ufmache und lese.",
           ],
@@ -60,8 +60,8 @@ export default defineCalendar({
           signature: "Selina <3",
         },
       ],
-      },
-      {
+    },
+    {
       day: 3,
       title: "Es Lied vo eus",
       blocks: [
@@ -69,7 +69,8 @@ export default defineCalendar({
           type: "song",
           trackTitle: "Dove e quando",
           artist: "Benji & Fede",
-          spotifyUrl: "https://open.spotify.com/track/5XM7tx8ovQ9UrYqUowW1AK?si=82234e595c644072",
+          spotifyUrl:
+            "https://open.spotify.com/track/5XM7tx8ovQ9UrYqUowW1AK?si=82234e595c644072",
           artwork: {
             src: "/media/photos/song1.png",
             alt: "Dove e quando - Benji & Fede",
@@ -115,9 +116,9 @@ export default defineCalendar({
           conditions: [
             "Ihlösbar amene abig vo dinere Wahl",
             "Ich derf nie sege, dass du entscheide söllsch",
-            "Du derfsch Ihspruch erhebe, wenns dir nöd passt natürlich"
+            "Du derfsch Ihspruch erhebe, wenns dir nöd passt natürlich",
           ],
-          note: "Eigentlich han ich en Abig wo du ussuechsch wele mache, sprich das isch das was anderi mache würet. Aber mir sind nöd so anderi und will mir beidi entscheide hasset machemer das halt so ume. ",
+          note: "Eigentlich han ich en Abig wo du ussuechsch wele mache, sprich das isch das was anderi mache würdet. Aber mir sind nöd so anderi und will mir beidi entscheide hasset machemer das halt so ume.",
         },
       ],
     },
@@ -148,8 +149,7 @@ export default defineCalendar({
         {
           type: "voucher",
           title: "Es chlines Gschänckli für dich",
-          description:
-            "Abhol parat bi mir.",
+          description: "Abhol parat bi mir.",
           note: "Da du dich jetzt als echti Pro-Gamerin herusgstellt hesch, bechunsch, wenn mir eus s nächste mal gsehn en chline Priis vo mir hehe. Mal luege, öb du det genau so guet drin bisch. (Han gar kei Zwiifel)",
         },
       ],
@@ -162,7 +162,11 @@ export default defineCalendar({
           type: "reasons",
           title: "Drüü Sache, wo min Tag besser machet",
           intro: "Ganz unspektakulär und genau deswege wichtig:",
-          reasons: ["Dis Lächle", "Dini Verlägeheit mängisch und die schüüchi Art wo du mängisch hesch", "Whatsapp eifach Videos nach em schaffe oder de Schuel"],
+          reasons: [
+            "Dis Lächle",
+            "Das du immer nahfrögsch wie es mir gaht und es guet oder oke nöd akzeptiersch. Du bestahsch durff das ich verzehle was soo schön isch.",
+            "Whatsapp eifach Videos nach em schaffe oder de Schuel",
+          ],
         },
       ],
     },
@@ -192,7 +196,8 @@ export default defineCalendar({
           type: "song",
           trackTitle: "Bad Liar",
           artist: "Anna Hamilton, The Acoustic Room",
-          spotifyUrl: "https://open.spotify.com/track/0X9MxHR1rTkEHDjp95F2OO?si=c17d255d605a46f9",
+          spotifyUrl:
+            "https://open.spotify.com/track/0X9MxHR1rTkEHDjp95F2OO?si=c17d255d605a46f9",
           whyItRemindsUs: [
             "Ach hahaha das Lied. Schrecklich minere Meinig nach. Aber jedesmal wenn ich die Playlist lose (was eigentlich immer isch) und das Lied ufchunnt muss ich sooo lache. Naja die Version isch wük nöd mies, aber für dich würd ich mir das Lied uf durschleife ine zieh, wenn es dich glücklich mache würd. Und ja es isch scho schön aber s Original immerno besser hehe",
           ],
@@ -209,7 +214,7 @@ export default defineCalendar({
           videos: [
             {
               src: "/media/videos/Oktoberfest.mp4",
-              alt: "Oktoberfeset",
+              alt: "Oktoberfest",
             },
           ],
           dateLabel: "24.10.2026",
@@ -233,7 +238,9 @@ export default defineCalendar({
             },
           ],
           location: "Assisi, Italie 11-16.10.2026",
-          story: ["Ich weiss nöd öb es dir ufgfalle isch, aber han im Lager so oft soooo tüüf i dini Auge gluegt und dir Kompliment für dini Auge gmacht. Sie hend mich würklich eifach fasziniert und hans Gfühl gha die hend no so viel z'verzehle. Ich will alles usefinde was dehinter steckt. Jetzt bin ich am Punkt wo ich die Möglichkeit han und wow... Bin parat für alles was no chunnt und chans chum abwarte die Auge no Stunde und Jahre lang z'betrachte."],
+          story: [
+            "Ich weiss nöd öb es dir ufgfalle isch, aber han im Lager so oft soooo tüüf i dini Auge gluegt und dir Kompliment für dini Auge gmacht. Sie hend mich würklich eifach fasziniert und hans Gfühl gha die hend no so viel z'verzehle. Ich will alles usefinde was dehinter steckt. Jetzt bin ich am Punkt wo ich die Möglichkeit han und wow... Bin parat für alles was no chunnt und chans chum abwarte die Auge no Stunde und Jahre lang z'betrachte.",
+          ],
         },
       ],
     },
@@ -254,16 +261,24 @@ export default defineCalendar({
     },
     {
       day: 13,
-      title: "Eine Nachricht zum Anhören",
+      title: "E Nachricht zum lose",
       blocks: [
         {
           type: "voice",
-          title: "Für dich aufgenommen",
+          title: "Für dich ufgnoh",
           intro: [
-            "Heute gibt es etwas zum Anhören. Am schönsten mit einer Tasse Tee.",
+            "Hüt mal echli anderst",
           ],
-          audio: { src: "/media/audio/placeholder-voice.wav" },
-          durationLabel: "0:03",
+          audio: { src: "/media/audio/Joya_Calendar_audio.m4a" },
+          durationLabel: "0:50",
+          transcript: [
+            "Hallo, mein Schatz.",
+            "Heute ist schon der 13. Dezember und für heute habe ich mir gedacht, dass ich dir eine kleine Sprachnachricht hinterlasse, weil du ja immer sagst, wie sehr du es magst, wenn ich Italienisch spreche.",
+            "Ja, genau.",
+            "Ich wollte dir einfach sagen, wie dankbar und wie unglaublich glücklich ich bin, dich dieses Jahr kennengelernt zu haben.",
+            "Mir fehlen die Worte für all das.",
+            "Ich hoffe, dass dir mein Adventskalender bis jetzt gefällt. Und ich denke, dass noch ein paar schöne Kleinigkeiten auf dich warten, die dir ein Lächeln ins Gesicht zaubern werden.",
+          ],
         },
       ],
     },
@@ -275,7 +290,8 @@ export default defineCalendar({
           type: "song",
           trackTitle: "we fell in love in october",
           artist: "girl in red",
-          spotifyUrl: "https://open.spotify.com/track/6IPwKM3fUUzlElbvKw2sKl?si=0307fd9be0f948fb",
+          spotifyUrl:
+            "https://open.spotify.com/track/6IPwKM3fUUzlElbvKw2sKl?si=0307fd9be0f948fb",
           artwork: {
             src: "/media/photos/song3.png",
             alt: "we fell in love in october - girl in red",
@@ -294,8 +310,7 @@ export default defineCalendar({
         {
           type: "voucher",
           title: "Es ganz chlises Gschänckli",
-          description:
-            "Du derfsch jetzt dis chline Päckli ufmache. ",
+          description: "Du derfsch jetzt dis chline Päckli ufmache.",
           note: "Es isch nüt grosses, aber finds mega herzig. Du chasch dir ussueche weles und denn mir s andere gäh. Hihihi",
         },
       ],
@@ -322,11 +337,12 @@ export default defineCalendar({
           type: "song",
           trackTitle: "Prada",
           artist: "RAYE, Cassö, D-Block Europe",
-          spotifyUrl: "https://open.spotify.com/track/59NraMJsLaMCVtwXTSia8i?si=7ca66e8aee4a4ad0",
-          intro: [
-            "Das Lied het e ganz spezielli Bedütig.",
+          spotifyUrl:
+            "https://open.spotify.com/track/59NraMJsLaMCVtwXTSia8i?si=7ca66e8aee4a4ad0",
+          intro: ["Das Lied het e ganz spezielli Bedütig."],
+          whyItRemindsUs: [
+            "Wo mir in Assisi gsie sind und du i mim Ämtli Team gsie bisch han ich mich natürlich gfreut hehe. Aber wo mir so produktiv i de Chuchi gsie sind han ich dich gfrögt, öb du hesch wele Musig laufe lah und du hesch denn genau Prada laufe lah und bisch schockiert gsie, dass ich das Lied kenne.",
           ],
-          whyItRemindsUs: ["Wo mir in Azzizi gsie sind und du i mim Ämtli Team gsie bisch han ich mich natürlich gfreut hehe. Aber wo mir so produktiv i de Chuchi gsie sind han ich dich gfrögt, öb du hesch wele Musig laufe lah und du hesch denn genau Prada laufe lah und bisch schockiert gsie, dass ich das Lied kenne."],
         },
       ],
     },
@@ -336,8 +352,9 @@ export default defineCalendar({
       blocks: [
         {
           type: "letter",
-          paragraphs: ["Also ich probier mich churz z'hebe, wird schwierig but I'll try.",
-            "Früehner han ich nie a Teenag eLove glaubt, han dir das glaub scho öfters gseit. Han nie verstande, wie Lüüt so sicher sii chönd.Aber sit du i mis Lebe trette bisch het sich mini Meinig um 180 grad gkehrt. Ich will gar nüt da sege. Egal was in Zuekunft cho wird, weiss ich dass ich jedi Sekunde gnüsse wird. Mer weiss nähmlich nie wenn es die letzti isch. Leider han ich das das Jahr au wieder uf die herti Tour müsse lerne. Deswege jedi Sekunde, jede Hunderstel gnüsse und s'Beste drus mache. Us jedere Situation."
+          paragraphs: [
+            "Also ich probier mich churz z'hebe, wird schwierig but I'll try.",
+            "Früehner han ich nie a Teenage Love glaubt, han dir das glaub scho öfters gseit. Han nie verstande, wie Lüüt so sicher sii chönd. Aber sit du i mis Lebe trette bisch het sich mini Meinig um 180 grad gkehrt. Ich will gar nüt da sege. Egal was in Zuekunft cho wird, weiss ich dass ich jedi Sekunde gnüsse wird. Mer weiss nähmlich nie wenn es die letzti isch. Leider han ich das das Jahr au wieder uf die herti Tour müsse lerne. Deswege jedi Sekunde, jede Hunderstel gnüsse und s'Beste drus mache. Us jedere Situation.",
           ],
           signature: "Selina <3",
         },
@@ -353,30 +370,38 @@ export default defineCalendar({
           invitation: [
             "Hüt suechemer beidi unabhängig vonenand s'schönste Wiehnachtsliecht i eusere Umgebig.",
             "Am Abig vergliichemer.",
-            "Schriib mer bitte schnell, damit ich weiss, dass es hüt isch haha"
+            "Schriib mer bitte schnell, damit ich weiss, dass es hüt isch haha",
           ],
         },
       ],
     },
     {
       day: 20,
-      title: "Eine Lieblingserinnerung",
+      title: "E Lieblingserrinerig",
       blocks: [
         {
           type: "memory",
           photos: [
             {
-              src: "/media/photos/placeholder-cocoa.svg",
-              alt: "[PRIVATE PHOTO] Beispielbild: zwei Tassen heisse Schokolade",
+              src: "/media/photos/memory1.jpeg",
+              alt: "Zoe",
             },
             {
-              src: "/media/photos/placeholder-winter-walk.svg",
-              alt: "[PRIVATE PHOTO] Beispielbild: ein verschneiter Weg",
+              src: "/media/photos/memory2.jpeg",
+              alt: "Spiegel",
+            },
+            {
+              src: "/media/photos/memory3.jpeg",
+              alt: "Mir",
             },
           ],
-          date: "2024-12-21",
-          location: "[ORT]",
-          story: ["[YOUR FAVOURITE MEMORY]"],
+          date: "2026-11-14",
+          location: "Dietlikon, Bassersdorf, Breite b'Nürensdorf, Seen",
+          story: [
+            "De Tag wird für mich unvergässlich bliibe. I de Theorie wär das euses erste Träffe gsie nach Assisi, hettemer eus nöd vorher nomal troffe. Also bessergseit es wär am Fritig gsie but anyways. Ich han mich soo enorm uf de Tag gfreut, will ich gwüsst han, dass de Tag allei eus ghört. Mir sind am Morge bi Ziite uf de Bus richtig Dietlike (nöd richtig Flughafe det wo s'Schiff fahrt in Meer vo de Schwiiz). Als erstes sind mir in BabyOne und mis Herz isch det eifach nur ufgange. Ich hans soo herzig gfunde, wie du öppis chlises für d'Nele usgsuecht hesch. Euse Zweiti Stop isch den im Ikea gsie. Wie du jetzt ja weisch, lieb ich de Ikea. Um ehrlich z'sii han ich mir scho vorgstellt, wie mir denn eventuell mal für e zuekünftigi Wohnig im Ikea gönd go poste und eus für Möbel und Deko entscheidet, au wenn du das ja nöd so gern machsch, würd ich jedi Sekunde devo mit dir gnüsse. Denn eusi Hauptmission vom Tag: s'Gschänck für d'Zoe. Im Jumbo simmer leider nöd so erfolgriich gsie, will er im Umbau gsie isch und leider das Fass nüme gha het. Mir sind wiiter in Ottos wo mer natürlich au chli Alk händ müsse poste. Denn wieder in Jumbo um e Schachtle z'poste hahaha. Und als letzts simmer denn no in Coop zum alles abschlüsse und abrunde. Mir hend eus nochene dezue entschiede, dass mir no schnell zu mir gönd, um es paar Bilder uszdrucke zum uf d'Box chläbe. Det hemmer au eusi erste richtigi Bilder zäme gmacht. Eis hesch du sogar als Polaroid i dini Handyhülle tah, da isch mis Herz grad no meh ufgange. Und han mich nöd chöne zrugg hebe wo du die Bilder am ussueche gsie bisch. Chan mini Händ würklich nöd vo dir lah und am liebste hetti ich dich i jedem Moment vom Tag bi mir. Mir sind denn au no churz bi dir in Breiti verbii, wo ich endlich d'Laura kenneglernt han, au wenn es nur churz gsie isch han ich mich bi dine Familie direkt willkomme gfühlt, was unbeschrieblich isch. Wow denn chömemer fast zumene Highlight vom Tag. Dis Chleid für d'Firmig. Wo du das go ahprobiere bisch und nochene usecho bisch, bin ich eifach sprachlos gsie. Ich han nöd gwüsst was sege (viellicht hett mer das bemerkt haha). Du hesch perfekt usgseh! Zum das ganze no abschlüsse simmer no zu dine Mom ihre no go Hoi säge. Han dini ganzi Familie a dem Tag kenneglernt hihihi so toll. So liebi Mensche.",
+            "Ich han a dem Tag so viel chlini Sache über dich glernt. Zum Biispiel, dass du nur mit Bargeld zahlsch, um dis Geld nöd unnötig ih Onlineshops uszgseh ;)",
+            "Unvergesslich für mich. Es het sich sooo normal ahgfühlt und isch en ganz normale Alltag gsie, wie er in Zuekunft chönnit usgseh, ohni irgendöppis extra müsse mache. Eifach zäme das mache, was mer eh erledige muss in guete Begleitig.",
+          ],
         },
       ],
     },
@@ -387,35 +412,39 @@ export default defineCalendar({
         {
           type: "reasons",
           title: "Sache, uf die ich mich mit dir freue",
-          reasons: ["Gmeinsami Ferie", "Öfters i dine Ärm chöne ufwache", "Euse Neujahreskuss", "Gmeinsami Errinerige sammle"],
+          reasons: [
+            "Gmeinsami Ferie",
+            "Öfters i dine Ärm chöne ufwache",
+            "Euse Neujahreskuss",
+            "Gmeinsami Errinerige sammle",
+          ],
         },
         {
           type: "voucher",
           title: "En Abigsspaziergang",
-          description:
-            "Wenn du willsch, Lust und Ziit hesch.",
+          description: "Wenn du willsch, Lust und Ziit hesch.",
         },
       ],
     },
     {
       day: 22,
-      title: "Ein Brief mit Bild",
+      title: "En chline Brief mit Bilder",
       blocks: [
-        {
-          type: "letter",
-          paragraphs: [
-            "[YOUR PHOTO LETTER] Ein paar Zeilen zu dem Bild unten.",
-          ],
-        },
         {
           type: "memory",
           photos: [
             {
-              src: "/media/photos/placeholder-window.svg",
-              alt: "[PRIVATE PHOTO] Beispielbild: Kerzenlicht am Fenster",
+              src: "/media/photos/img1.png",
+              alt: "Selfie im wiisse T-Shirt mit Herzchettli",
+            },
+            {
+              src: "/media/photos/img2.png",
+              alt: "Selfie im Minion-Kostüm",
             },
           ],
-          story: ["[YOUR MEMORY]"],
+          story: [
+            "Ich lieb das Bild. Ein Tag nach em Lager isch das gsie und ab dem Moment hesch du mir de Chopf nur no meh verdreht. Ich han nöd gwüsst a was ich bi dir drah bin aber läck bin ich scho verschosse gsie hahaha. Unglaublich. Ich bin direkt mit de Ronja schnell use und han ihre alles verzehlt. Mini Gedanke a dem Abig sind nöd ganz so schön gsie, wegem andere Ereigniss wo vorgfalle isch... aber du hesch mich grad ufgmunteret. Und nomal WOW das Bild. Ich liebs.",
+          ],
         },
       ],
     },
@@ -426,7 +455,7 @@ export default defineCalendar({
         {
           type: "letter",
           paragraphs: [
-            "Nur no einmal schlafe. S letzte Tüürli isch s grösse im ganze Dörfli.",
+            "Nur no einmal schlafe. S letzte Tüürli isch s grösste im ganze Dörfli.",
             "Ich will dich gar nöd spoilere, aber ich bin mir sicher, dass du dich sehr freue würsch. Ich bin nöd würklich en Materielle Mensch, ich glaub das hesch mitlerwille au scho mitbecho hihi. Aber es isch öppis vo ganzem Herze...",
           ],
         },
@@ -440,16 +469,14 @@ export default defineCalendar({
           type: "finalLetter",
           title: "Liebi Joya",
           paragraphs: [
-            "Ich hoff, dass du dich über die chlini Geste vo mir gfreut hesch und mindestens eis chlises Lächle im Gsicht gha hesch. Ich han mir Müeh geh, au wenns nöd viel gsie isch, isch es für mich au so schön gsie das allei z'vorbereite. Nomal genau durchdänke, was ich zum Bild oder zum Lied fühlt han und was ich dir dezue säge han wele. Es isch würklcih vo Herze cho <3",
+            "Ich hoff, dass du dich über die chlini Geste vo mir gfreut hesch und mindestens eis chlises Lächle im Gsicht gha hesch. Ich han mir Müeh geh, au wenns nöd viel gsie isch, isch es für mich au so schön gsie das allei z'vorbereite. Nomal genau durchdänke, was ich zum Bild oder zum Lied fühlt han und was ich dir dezue säge han wele. Es isch würklich vo Herze cho <3",
             "Danke für jede Tag im Dezember, wo du dir d'Ziit gnoh hesch die Tüürli z'öffne. Das isch nöd selbstverständlich.",
-            ],
-            photo: {
-            src: "/media/photos/placeholder-stars.svg",
-            alt: "[PRIVATE PHOTO] Beispielbild: ein Sternenhimmel über dem Dorf",
-          },
+          ],
           finalSurprise: {
             title: "Und no öppis",
-            paragraphs: ["Du derfsch jetzt s chline Gschänckli wo ich verpackt han ufmache. Ich han eifach probiert alles was ich zu dem Ziitpunk gfühlt gha han irgendwie ih Wort z'fasse i de Hoffnig, dass es irgendwenn mal e schöni Errinerig wird an Ahfang. Und tuet mer leid, dass es nüme so aktiv gschriebe worde isch, defür isch det würklich de ganzi Ahfang drin."],
+            paragraphs: [
+              "Du derfsch jetzt s chline Gschänckli wo ich verpackt han ufmache. Ich han eifach probiert alles was ich zu dem Ziitpunkt gfühlt gha han irgendwie ih Wort z'fasse i de Hoffnig, dass es irgendwenn mal e schöni Errinerig wird an Ahfang. Und tuet mer leid, dass es nüme so aktiv gschriebe worde isch, defür isch det würklich de ganzi Ahfang drin.",
+            ],
           },
           signature: "Selina <3",
         },
