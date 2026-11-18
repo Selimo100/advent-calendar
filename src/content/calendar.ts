@@ -355,6 +355,7 @@ export default defineCalendar({
           paragraphs: [
             "Also ich probier mich churz z'hebe, wird schwierig but I'll try.",
             "Früehner han ich nie a Teenage Love glaubt, han dir das glaub scho öfters gseit. Han nie verstande, wie Lüüt so sicher sii chönd. Aber sit du i mis Lebe trette bisch het sich mini Meinig um 180 grad gkehrt. Ich will gar nüt da sege. Egal was in Zuekunft cho wird, weiss ich dass ich jedi Sekunde gnüsse wird. Mer weiss nähmlich nie wenn es die letzti isch. Leider han ich das das Jahr au wieder uf die herti Tour müsse lerne. Deswege jedi Sekunde, jede Hunderstel gnüsse und s'Beste drus mache. Us jedere Situation.",
+            "Will ich mich echli chürzer ghalte han, derfsch du gern no s chline Gschänckli 18 Ufmache vo de Box"
           ],
           signature: "Selina <3",
         },
